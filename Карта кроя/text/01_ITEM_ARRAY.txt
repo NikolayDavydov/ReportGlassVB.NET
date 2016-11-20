@@ -1,0 +1,15 @@
+﻿[---ITEM_ARRAY---]
+[REC#]=1
+[BOX#]=1
+[ORDER@]=
+[ITEM#]=1
+[OPT_GROUP#]=99
+[CODE@]=4 M1
+[WIDTH#.]=1583.000
+[HEIGHT#.]=3180.000
+[UNIT_QTY#]=1
+[SHEET_QTY#]=1
+[*RACK@]=?
+[SHAPE_FILE@]=sf1.anz
+
+
