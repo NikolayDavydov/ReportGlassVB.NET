@@ -1,10 +1,12 @@
 ﻿Public Class Detail
-    Private Structure size
-        Private width As Integer
-        Private height As Integer
+    Public Structure size
+        Public width As Integer
+        Public height As Integer
     End Structure
-    Private sizedetail As size
-    Private countVertical As Integer = 1
-    Private countHorisontal As Integer = 1
+    Public sizedetail As size
+    Public countVertical As Integer = 1
+    Public countHorisontal As Integer = 1
+
+
 
 End Class
