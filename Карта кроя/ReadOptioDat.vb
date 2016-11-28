@@ -1,7 +1,11 @@
 ﻿Public Class ReadOptioDat
     Private file As String 'Имя файла OptioDat
     Private split As String()
-
+    Public item_record_array() As Array
+    Public glass_record_array() As Array
+    Public stock_sheet_record_array() As Array
+    Public x_area_record_array() As Array
+    Public y_area_record_array() As Array
 
     Sub New(ByVal _file As String)
         file = _file
@@ -9,15 +13,71 @@
         Dim headtag As New SplitBySubstring()
         headtag.GetArray(optlines, "[---")
         For i = 0 To UBound(headtag.array, 1)
-            If headtag.array(i).StartsWith("[---HEADER---]") Then
-                Dim header As New SplitBySubstring()
-                header.GetArray(headtag.array(i), "[")
-            ElseIf headtag.array(i).StartsWith("[---ITEM_ARRAY---]") Then
-                Dim item_array As New SplitBySubstring()
-                r.GetArray(headtag.array(i), "[")
+            Dim tag As String = headtag.getHeadTag(i)
+            Select Case tag
+                Case "[---HEADER---]"
+                    Dim header As New SplitBySubstring()
+                    header.GetArray(headtag.array(i), "[")
 
+                Case "[---ITEM_ARRAY---]"
+                    Dim item_array As New SplitBySubstring()
+                    item_array.GetArray(headtag.array(i), "[REC#]")
+                    For j = 0 To UBound(item_array.array, 1)
+                        ReDim Preserve item_record_array(j)
+                        Dim item_record As New SplitBySubstring()
+                        item_record.GetArray(item_array.array(j), "[")
+                        item_record_array(j) = item_record.array
+                    Next
 
-            End If
+                Case "[---GLASS_ARRAY---]"
+                    Dim glass_array As New SplitBySubstring()
+                    glass_array.GetArray(headtag.array(i), "[REC#]")
+                    For j = 0 To UBound(glass_array.array, 1)
+                        ReDim Preserve glass_record_array(j)
+                        Dim glass_record As New SplitBySubstring()
+                        glass_record.GetArray(glass_record.array(j), "[")
+                        glass_record_array(j) = glass_record.array
+                    Next
+
+                Case "[---OPT_PARAMETER---]"
+                    Dim opt_parameter As New SplitBySubstring()
+                    opt_parameter.GetArray(headtag.array(i), "[")
+
+                Case "[---OPT_RESULT_HEADER---]"
+                    Dim opt_result_header As New SplitBySubstring()
+                    opt_result_header.GetArray(headtag.array(i), "[")
+
+                Case "[---OPT_RESULT_STOCK_SHEET_ARRAY---]"
+                    Dim stock_sheet_array As New SplitBySubstring()
+                    stock_sheet_array.GetArray(headtag.array(i), "[STOCK_SHEET#]")
+                    For j = 0 To UBound(stock_sheet_array.array, 1)
+                        ReDim Preserve stock_sheet_record_array(j)
+                        Dim stock_sheet_record As New SplitBySubstring()
+                        stock_sheet_record.GetArray(stock_sheet_record.array(j), "[")
+                        stock_sheet_record_array(j) = stock_sheet_record.array
+                    Next
+
+                Case "[---OPT_RESULT_X_AREA_ARRAY---]"
+                    Dim x_area_array As New SplitBySubstring()
+                    x_area_array.GetArray(headtag.array(i), "[X_AREA#]")
+                    For j = 0 To UBound(x_area_array.array, 1)
+                        ReDim Preserve x_area_record_array(j)
+                        Dim x_area_record As New SplitBySubstring()
+                        x_area_record.GetArray(x_area_array.array(j), "[")
+                        x_area_record_array(j) = x_area_record.array
+                    Next
+
+                Case "[---OPT_RESULT_Y_AREA_ARRAY---]"
+                    Dim y_area_array As New SplitBySubstring()
+                    y_area_array.GetArray(headtag.array(i), "[Y_AREA#]")
+                    For j = 0 To UBound(y_area_array.array, 1)
+                        ReDim Preserve y_area_record_array(j)
+                        Dim y_area_record As New SplitBySubstring()
+                        y_area_record.GetArray(y_area_array.array(j), "[")
+                        y_area_record_array(j) = y_area_record.array
+                    Next
+
+            End Select
         Next
 
         'Dim tag As String = ""

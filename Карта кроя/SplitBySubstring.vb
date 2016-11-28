@@ -35,8 +35,16 @@
             End If
         Next
     End Sub
+    Public Function getHeadTag(ByVal index As Integer) As String
+        getHeadTag = ""
+        If Left(array(index), 4) = "[---" Then
+            getHeadTag = Left(array(index), array(index).IndexOf("---]") + 4)
+            'getHeadTag = Mid(array(index), array(index).IndexOf("[---"), array(index).IndexOf("---]"))
+        End If
+
+    End Function
     Private Function getTag(ByVal str) As String
-        getTag = Mid(str, str.indexof("["), str.indexof("]"))
+        getTag = Mid(str, str.indexof("[---"), str.indexof("---]"))
         If Right(getTag, 1) = "@" Or Right(getTag, 1) = "#" Then
             getTag = Left(getTag, Len(getTag) - 1)
         ElseIf Right(getTag, 2) = "#." Then
