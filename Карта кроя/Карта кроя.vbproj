@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Colors.vb" />
     <Compile Include="Detail.vb" />
     <Compile Include="CodeFile1.vb" />
     <Compile Include="CustomControl1.Designer.vb">
@@ -166,6 +167,7 @@
     <Compile Include="CustomControl1.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="folderClass.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -179,6 +181,10 @@
     <Compile Include="Form2.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="GLASS.vb" />
+    <Compile Include="GlobalSub.vb" />
+    <Compile Include="HEADER.vb" />
+    <Compile Include="ITEM.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -194,8 +200,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="OPT_PARAMETER.vb" />
+    <Compile Include="OPT_RESULT_HEADER.vb" />
+    <Compile Include="OPT_RESULT_STOCK_SHEET_ARRAY.vb" />
+    <Compile Include="OPT_RESULT_U_V_W_Z_AREA.vb" />
+    <Compile Include="OPT_RESULT_X_AREA.vb" />
+    <Compile Include="OPT_RESULT_Y_AREA.vb" />
+    <Compile Include="PORTION.vb" />
     <Compile Include="ReadOptioDat.vb" />
+    <Compile Include="Report.vb" />
+    <Compile Include="Result.vb" />
     <Compile Include="Settings.vb" />
+    <Compile Include="SplitBySubstring.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomControl1.resx">
@@ -259,6 +275,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ITAP.SquareOPT.dll" />
     <Content Include="MigraDoc.Rendering.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

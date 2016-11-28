@@ -21,6 +21,7 @@ Public Class Form1
                                       "Кол-во пластин", "Площадь пластин", "Кол-во остатков", "Кол-во раб. остатков", _
                                       "Площадь остатков", "Процент общий"}
 
+    Public colors As New Colors
     Public Structure ITEM_ARRAY
         Public REC As Int32
         Public BOX As Int32
@@ -125,7 +126,7 @@ Public Class Form1
     Dim graph As System.Drawing.Graphics
     Dim pict As System.Drawing.Bitmap
     Dim bmp As System.Drawing.Bitmap
-    Dim bmp_tmp As System.Drawing.Bitmap
+    Public bmp_tmp As System.Drawing.Bitmap
     Dim formatsArray() As System.Drawing.Size 'Массив форматов стекол
     Dim screenFormat As System.Drawing.Size
     Dim coordPlate As System.Drawing.Point
@@ -193,102 +194,25 @@ Public Class Form1
         Public point As System.Drawing.Point
         Public size As System.Drawing.Size
     End Structure
-    Public Structure colorRectangle
-        Public colorFill As System.Drawing.Color
-        Public colorPen As System.Drawing.Color
-        Public penThikness As Single
-    End Structure
-    Dim colorRectPlate As colorRectangle                'Параметры прямоугольника листа
-    Dim colorRectPlateWithoutBorders As colorRectangle  'Параметры окромленного листа
-    Dim colorRectSubPlate As colorRectangle             'Параметры субпластины
-    Dim colorRectDetail As colorRectangle 'Параметры детали
-    Dim colorLineRed As colorRectangle
-    Dim colorLineBlack As colorRectangle
+    
     Dim Portion() As PortionStructure 'Массив порций
     Dim szPlateWOBorgers As System.Drawing.Size 'Размер листа без кромок
     Dim sz As System.Drawing.Size 'Размер листа
     Dim sz2 As System.Drawing.Size 'Размер листа без кромок
     Dim pt As System.Drawing.Point
-    Dim FolderPath As String 'Папка с выгрузками
+    Public FolderPath As String 'Папка с выгрузками
     Dim AppPath As String   'Папка с программой
     Dim foldersArray() As String
+
     'Блок функций
-    Private Function TrfCoordRectangle(ByVal origPoint As System.Drawing.Point, ByVal origSize As System.Drawing.Size, _
-                                       ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
-        Dim newPoint As System.Drawing.Point
-        newPoint.X = szPlate.Width - origPoint.X - origSize.Width
-        newPoint.Y = szPlate.Height - origPoint.Y - origSize.Height
-        Return newPoint
-    End Function
-    Private Function TrfCoordPoint(ByVal origPoint As System.Drawing.Point, ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
-        Dim newPoint As System.Drawing.Point
-        newPoint.X = szPlate.Width - origPoint.X
-        newPoint.Y = szPlate.Height - origPoint.Y
-        Return newPoint
-    End Function
-    Private Function ResizeByRatio(ByVal x As Integer, ByVal ratio As Double) As Integer
-        ResizeByRatio = CInt(CDbl(x) * ratio)
-    End Function
-    Private Function ResizePoint(ByVal pt As Point, ByVal ratio As Single) As Point
-        ResizePoint.X = CInt(CDbl(pt.X) * ratio)
-        ResizePoint.Y = CInt(CDbl(pt.Y) * ratio)
-    End Function
-    Private Function ResizeSize(ByVal sz As Size, ByVal ratio As Single) As Size
-        ResizeSize.Width = CInt(CDbl(sz.Width) * ratio)
-        ResizeSize.Height = CInt(CDbl(sz.Height) * ratio)
-    End Function
-    Private Function CreatePlate(ByVal filename As String) As System.Drawing.Bitmap
-        bmp_tmp = New Bitmap(filename)
-        Return bmp_tmp
-    End Function
-    Private Function PlaceRectangle(ByVal graph As System.Drawing.Graphics, ByVal pt As System.Drawing.Point, _
-                ByVal sz_tmp As System.Drawing.Size, ByVal ratio As Single, ByVal colorRect As colorRectangle) As System.Drawing.Graphics
-
-        Dim fill As New System.Drawing.SolidBrush(colorRect.colorFill)
-        Dim pen As New System.Drawing.Pen(colorRect.colorPen, 3)
-        Dim rect As System.Drawing.Rectangle
-        rect = New System.Drawing.Rectangle(ResizePoint(pt, ratio), ResizeSize(sz_tmp, ratio))
-        graph.FillRectangle(fill, rect)
-        graph.DrawRectangle(pen, rect)
-        Return graph
-    End Function
-    Private Function PlaceMarking(ByVal graph As System.Drawing.Graphics, ByVal pt As System.Drawing.Point, _
-                ByVal sz_tmp As System.Drawing.Size, ByVal ratio As Single, ByVal str As String) As System.Drawing.Graphics
-
-        'Dim fill As New System.Drawing.SolidBrush(colorRect.colorFill)
-        'Dim pen As New System.Drawing.Pen(colorRect.colorPen, 3)
-        'Dim rect As System.Drawing.Rectangle
-        Dim centerRectangle As PointF
-        centerRectangle.X = ResizePoint(pt, ratio).X + (ResizeSize(sz_tmp, ratio).Width / 2)
-        centerRectangle.Y = ResizePoint(pt, ratio).Y + (ResizeSize(sz_tmp, ratio).Height / 2)
-
-        'Dim drawString As [String] = ""
-
-        ' Create font and brush.
-        Dim drawFont As New System.Drawing.Font("Arial", 38)
-        Dim drawBrush As New SolidBrush(System.Drawing.Color.Black)
-
-        ' Create point for upper-left corner of drawing.
-        Dim drawPoint As New PointF()
-        drawPoint.Y = centerRectangle.Y
-        drawPoint.X = ResizePoint(pt, ratio).X
-        ' Set format of string.
-        Dim drawFormat As New StringFormat
-        'drawFormat.FormatFlags = StringFormatFlags.DirectionVertical
-        'rect = New System.Drawing.Rectangle(ResizePoint(pt, ratio), ResizeSize(sz_tmp, ratio))
-        graph.DrawString(str, drawFont, drawBrush, drawPoint, drawFormat)
-        'graph.FillRectangle(fill, rect)
-        'graph.DrawRectangle(pen, rect)
-        Return graph
-    End Function
-    Private Function PlaceLine(ByVal graph As System.Drawing.Graphics, ByVal pt1 As System.Drawing.Point, _
-                               ByVal pt2 As System.Drawing.Point, _
-                               ByVal ratio As Single, _
-                               ByVal colorLine As colorRectangle) As System.Drawing.Graphics
-        Dim pen As New System.Drawing.Pen(colorLine.colorPen, colorLine.penThikness)
-        graph.DrawLine(pen, ResizePoint(pt1, ratio), ResizePoint(pt2, ratio))
-        Return graph
-    End Function
+    'Private Function PlaceLine(ByVal graph As System.Drawing.Graphics, ByVal pt1 As System.Drawing.Point, _
+    '                           ByVal pt2 As System.Drawing.Point, _
+    '                           ByVal ratio As Single, _
+    '                           ByVal colorLine As colorRectangle) As System.Drawing.Graphics
+    '    Dim pen As New System.Drawing.Pen(colorLine.colorPen, colorLine.penThikness)
+    '    graph.DrawLine(pen, ResizePoint(pt1, ratio), ResizePoint(pt2, ratio))
+    '    Return graph
+    'End Function
     Private Function Get_str_to_int(ByVal str As String, ByVal start As Int16, ByVal len As Int16) As Int32
         Dim str_tmp As String = "0"
         If start = 0 Then
@@ -330,28 +254,7 @@ Public Class Form1
         Next
     End Function
     Public Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        'Параметры границы субпластин
-        colorLineRed.colorPen = System.Drawing.Color.Red
-        colorLineRed.penThikness = 4
-        'Параметры границы группы деталей
-        colorLineBlack.colorPen = System.Drawing.Color.Black
-        colorLineBlack.penThikness = 4
-        'Параметры прямоугольника листа
-        colorRectPlate.colorFill = System.Drawing.Color.LightGray
-        colorRectPlate.colorPen = System.Drawing.Color.Black
-        colorRectPlate.penThikness = 4
-        'Параметры окромленного листа
-        colorRectPlateWithoutBorders.colorFill = System.Drawing.Color.LightGray
-        colorRectPlateWithoutBorders.colorPen = System.Drawing.Color.Black
-        colorRectPlateWithoutBorders.penThikness = 4
-        'Параметры субпластины
-        colorRectSubPlate.colorFill = System.Drawing.Color.LightGray
-        colorRectSubPlate.colorPen = System.Drawing.Color.Black
-        colorRectSubPlate.penThikness = 4
-        'Параметры детали
-        colorRectDetail.colorFill = System.Drawing.Color.White
-        colorRectDetail.colorPen = System.Drawing.Color.Black
-        colorRectDetail.penThikness = 4
+
 
         'Dim frm2 As New Form
         'frm2.Name = "Form2"
@@ -461,10 +364,10 @@ Public Class Form1
                             plateGraph.Clear(System.Drawing.Color.Gray)
 
                             'Рисуем целый лист
-                            plateGraph = PlaceRectangle(plateGraph, pt, sz, ratio, colorRectPlate)
+                            'plateGraph = PlaceRectangle(plateGraph, pt, sz, ratio, colorRectPlate)
 
                             'Рисуем лист без кромок
-                            plateGraph = PlaceRectangle(plateGraph, coordPlate, sz2, ratio, colorRectPlateWithoutBorders)
+                            'plateGraph = PlaceRectangle(plateGraph, coordPlate, sz2, ratio, colorRectPlateWithoutBorders)
                             With .plate(n)
                                 coordSubPlate.X = coordPlate.X
                                 coordSubPlate.Y = coordPlate.Y
@@ -474,11 +377,11 @@ Public Class Form1
                                         sz_tmp.Width = .widthSubPlate
                                         sz_tmp.Height = .heightSubplate
                                         pt_tmp = TrfCoordRectangle(coordSubPlate, sz_tmp, sz)
-                                        plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectSubPlate)
+                                        'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectSubPlate)
 
                                         sz_tmp.Height = sz2.Height
                                         pt_tmp = TrfCoordRectangle(coordSubPlate, sz_tmp, sz)
-                                        plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectSubPlate)
+                                        'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectSubPlate)
                                         coordGroupDetail.X = coordSubPlate.X
                                         coordGroupDetail.Y = coordSubPlate.Y
                                         For p = 0 To .quGroupDetail - 1 'Группа деталей
@@ -486,7 +389,7 @@ Public Class Form1
                                                 sz_tmp.Width = .widthGroup
                                                 sz_tmp.Height = .heightGroup
                                                 pt_tmp = TrfCoordRectangle(coordGroupDetail, sz_tmp, sz)
-                                                plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
+                                                'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
                                                 For q = 0 To .quDetail - 1 'Деталь
 
                                                     'Рисуем Группу деталей
@@ -494,8 +397,8 @@ Public Class Form1
                                                         sz_tmp.Width = .widthGroup
                                                         sz_tmp.Height = .heightGroup
                                                         pt_tmp = TrfCoordRectangle(coordGroupDetail, sz_tmp, sz)
-                                                        plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
-                                                        plateGraph = PlaceMarking(plateGraph, pt_tmp, sz_tmp, ratio, .details(q).marking)
+                                                        'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
+                                                        'plateGraph = PlaceMarking(plateGraph, pt_tmp, sz_tmp, ratio, .details(q).marking)
                                                     Else
                                                         With .details(q)
                                                             coordDetail.X = coordSubPlate.X
@@ -505,8 +408,8 @@ Public Class Form1
                                                                     sz_tmp.Width = .widthDetail
                                                                     sz_tmp.Height = .heightDetail
                                                                     pt_tmp = TrfCoordRectangle(coordDetail, sz_tmp, sz)
-                                                                    plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
-                                                                    plateGraph = PlaceMarking(plateGraph, pt_tmp, sz_tmp, ratio, .marking)
+                                                                    'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
+                                                                    'plateGraph = PlaceMarking(plateGraph, pt_tmp, sz_tmp, ratio, .marking)
                                                                     coordDetail.Y = coordDetail.Y + .heightDetail
                                                                 Next s
                                                                 coordDetail.X = coordDetail.X + .widthDetail
@@ -527,7 +430,7 @@ Public Class Form1
                                         pt_tmp = TrfCoordPoint(coordSubPlate, sz)
                                         pt2_tmp.X = pt_tmp.X
                                         pt2_tmp.Y = pt_tmp.Y - sz2.Height
-                                        plateGraph = PlaceLine(plateGraph, pt_tmp, pt2_tmp, ratio, colorLineRed)
+                                        'plateGraph = PlaceLine(plateGraph, pt_tmp, pt2_tmp, ratio, colorLineRed)
                                         coordGroupDetail.X = coordSubPlate.X
                                         coordGroupDetail.Y = coordSubPlate.Y
                                         For p = 0 To .quGroupDetail - 1 'Группа деталей
@@ -536,7 +439,7 @@ Public Class Form1
                                             pt_tmp = TrfCoordPoint(coordGroupDetail, sz)
                                             pt2_tmp.X = pt_tmp.X - .widthSubPlate
                                             pt2_tmp.Y = pt_tmp.Y '- sz2.Height
-                                            plateGraph = PlaceLine(plateGraph, pt_tmp, pt2_tmp, ratio, colorLineBlack)
+                                            'plateGraph = PlaceLine(plateGraph, pt_tmp, pt2_tmp, ratio, colorLineBlack)
                                         Next
                                         coordSubPlate.X = coordSubPlate.X + .widthSubPlate
                                     End With
@@ -554,6 +457,7 @@ Public Class Form1
         Next i 'Порция
     End Sub
     Private Sub FindFiles(ByVal foldPath As String)
+        'Dim report As New Report(foldPath)
         Dim files As ReadOnlyCollection(Of String)
         Dim file As String
         Dim numPortion As Integer = 0
@@ -597,7 +501,7 @@ Public Class Form1
                         'Обработка optio.dat
                         files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "optio.dat")
                         file = SelectFile(files, "OPTIO.DAT")
-                        ReadOptioDat(file, numPortion, numGlass)
+                        'ReadOptioDat(file, numPortion, numGlass)
                         'обработка ANZ файлов
                         files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.anz")
                         For Each file In files
@@ -778,119 +682,119 @@ Public Class Form1
             End Select
         End With
     End Sub 'Читаем в массивы файлы Tra
-    Private Function isHeadTag(ByVal str) As String
-        isHeadTag = ""
-        If str.StartsWith("---") And str.indexof("]") <> -1 Then
-            isHeadTag = Mid(str, 4, Len(str) - 9).ToUpper
-        End If
-    End Function
-    Private Function isTag(ByVal str) As String
-        isTag = ""
-        If str.StartsWith("---") And str.indexof("]") <> -1 Then
-            isTag = Mid(str, 4, Len(str) - 9).ToUpper
-        End If
-    End Function
-    Private Function getTag(ByVal str) As String
-        getTag = Mid(str, 1, str.indexof("]"))
-    End Function
-    Private Function getHeadTag(ByVal str) As String
-        getHeadTag = Microsoft.VisualBasic.Left(str, Len(str) - 6)
-        getHeadTag = Microsoft.VisualBasic.Right(getHeadTag, Len(getHeadTag) - 3)
-        'getHeadTag = Mid(str, 2, str.indexof("]"))
-    End Function
-    Private Function getValue(ByVal str) As String
-        getValue = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 1)
-    End Function
-    Private Function getValueInt(ByVal str) As Integer
-        Dim str_tmp As String
-        str_tmp = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 2)
-        If str_tmp.IndexOf(".") <> -1 Then
-            str_tmp = Microsoft.VisualBasic.Left(str_tmp, str_tmp.IndexOf("."))
-        End If
-        getValueInt = Convert.ToInt32(str_tmp)
-    End Function
+    'Private Function isHeadTag(ByVal str) As String
+    '    isHeadTag = ""
+    '    If str.StartsWith("---") And str.indexof("]") <> -1 Then
+    '        isHeadTag = Mid(str, 4, Len(str) - 9).ToUpper
+    '    End If
+    'End Function
+    'Private Function isTag(ByVal str) As String
+    '    isTag = ""
+    '    If str.StartsWith("---") And str.indexof("]") <> -1 Then
+    '        isTag = Mid(str, 4, Len(str) - 9).ToUpper
+    '    End If
+    'End Function
+    'Private Function getTag(ByVal str) As String
+    '    getTag = Mid(str, 1, str.indexof("]"))
+    'End Function
+    'Private Function getHeadTag(ByVal str) As String
+    '    getHeadTag = Microsoft.VisualBasic.Left(str, Len(str) - 6)
+    '    getHeadTag = Microsoft.VisualBasic.Right(getHeadTag, Len(getHeadTag) - 3)
+    '    'getHeadTag = Mid(str, 2, str.indexof("]"))
+    'End Function
+    'Private Function getValue(ByVal str) As String
+    '    getValue = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 1)
+    'End Function
+    'Private Function getValueInt(ByVal str) As Integer
+    '    Dim str_tmp As String
+    '    str_tmp = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 2)
+    '    If str_tmp.IndexOf(".") <> -1 Then
+    '        str_tmp = Microsoft.VisualBasic.Left(str_tmp, str_tmp.IndexOf("."))
+    '    End If
+    '    getValueInt = Convert.ToInt32(str_tmp)
+    'End Function
 
-    Public Sub getItemArray(ByVal split() As String, ByVal strt As Int32, ByVal numportion As Integer, ByVal glass As Integer)
-        Dim iterator As Int32 = strt
-        Dim str As String
-        Dim itemIterator As Int32 = -1
-        With prf(numportion).GlassInPrf(glass)
-            While isTag(Split(iterator)) <> "GLASS_ARRAY)"
-                iterator = iterator + 1
-                str = getTag(split(iterator))
-                If str = "REC#" Then
-                    itemIterator = itemIterator + 1
-                End If
-                ReDim Preserve .itemArray(itemIterator)
-                With .itemArray(itemIterator)
-                    Select Case str
-                        Case "REC#"
-                            .REC = getValueInt(split(iterator))
-                        Case "BOX#"
-                            .BOX = getValueInt(split(iterator))
-                        Case "ORDER@"
-                            .ORDER = getValueInt(split(iterator))
-                        Case "ITEM#"
-                            .ITEM = getValueInt(split(iterator))
-                        Case "OPT_GROUP#"
-                            .OPT_GROUP = getValueInt(split(iterator))
-                        Case "CODE@"
-                            .CODE = getValue(split(iterator))
-                        Case "WIDTH#."
-                            .WIDTH = getValueInt(split(iterator))
-                        Case "HEIGHT#."
-                            .HEIGHT = getValueInt(split(iterator))
-                        Case "UNIT_QTY#"
-                            .UNIT_QTY = getValueInt(split(iterator))
-                        Case "SHEET_QTY#"
-                            .SHEET_QTY = getValueInt(split(iterator))
-                        Case "*RACK@"
-                            .RACK = getValue(split(iterator))
-                        Case "SHAPE_FILE@"
-                            .SHAPE_FILE = getValue(split(iterator))
-                    End Select
-                End With
-                'iterator = iterator + 1
-            End While
-        End With
-        optioLine = iterator - 1
-    End Sub
-    Public Sub ReadOptioDat(ByVal file As String, ByVal numportion As Integer, ByVal numglass As Integer)
-        Dim optlines As String = System.IO.File.ReadAllText(file)
-        Dim tag As String = ""
-        Dim split As String() = optlines.Split("[")
-        optioLine = 0
-        Dim maxLine As Int32 = UBound(split, 1)
-        While optioLine < maxLine
-            If isTag(split(optioLine)) <> "" Then
+    'Public Sub getItemArray(ByVal split() As String, ByVal strt As Int32, ByVal numportion As Integer, ByVal glass As Integer)
+    '    Dim iterator As Int32 = strt
+    '    Dim str As String
+    '    Dim itemIterator As Int32 = -1
+    '    With prf(numportion).GlassInPrf(glass)
+    '        While isTag(Split(iterator)) <> "GLASS_ARRAY)"
+    '            iterator = iterator + 1
+    '            str = getTag(split(iterator))
+    '            If str = "REC#" Then
+    '                itemIterator = itemIterator + 1
+    '            End If
+    '            ReDim Preserve .itemArray(itemIterator)
+    '            With .itemArray(itemIterator)
+    '                Select Case str
+    '                    Case "REC#"
+    '                        .REC = getValueInt(split(iterator))
+    '                    Case "BOX#"
+    '                        .BOX = getValueInt(split(iterator))
+    '                    Case "ORDER@"
+    '                        .ORDER = getValueInt(split(iterator))
+    '                    Case "ITEM#"
+    '                        .ITEM = getValueInt(split(iterator))
+    '                    Case "OPT_GROUP#"
+    '                        .OPT_GROUP = getValueInt(split(iterator))
+    '                    Case "CODE@"
+    '                        .CODE = getValue(split(iterator))
+    '                    Case "WIDTH#."
+    '                        .WIDTH = getValueInt(split(iterator))
+    '                    Case "HEIGHT#."
+    '                        .HEIGHT = getValueInt(split(iterator))
+    '                    Case "UNIT_QTY#"
+    '                        .UNIT_QTY = getValueInt(split(iterator))
+    '                    Case "SHEET_QTY#"
+    '                        .SHEET_QTY = getValueInt(split(iterator))
+    '                    Case "*RACK@"
+    '                        .RACK = getValue(split(iterator))
+    '                    Case "SHAPE_FILE@"
+    '                        .SHAPE_FILE = getValue(split(iterator))
+    '                End Select
+    '            End With
+    '            'iterator = iterator + 1
+    '        End While
+    '    End With
+    '    optioLine = iterator - 1
+    'End Sub
+    'Public Sub ReadOptioDat(ByVal file As String, ByVal numportion As Integer, ByVal numglass As Integer)
+    '    Dim optlines As String = System.IO.File.ReadAllText(file)
+    '    Dim tag As String = ""
+    '    Dim split As String() = optlines.Split("[")
+    '    optioLine = 0
+    '    Dim maxLine As Int32 = UBound(split, 1)
+    '    While optioLine < maxLine
+    '        If isTag(split(optioLine)) <> "" Then
 
-                Select Case getHeadTag(split(optioLine))
-                    Case "ITEM_ARRAY"
-                        optiodatIndex.ITEM_ARRAY = optioLine
-                        getItemArray(split, optioLine, numportion, numglass)
-                    Case "GLASS_ARRAY"
-                        optiodatIndex.GLASS_ARRAY = optioLine
-                    Case "OPT_PARAMETER"
-                        optiodatIndex.OPT_PARAMETER = optioLine
-                    Case "OPT_RESULT_HEADER"
-                        optiodatIndex.OPT_RESULT_HEADER = optioLine
-                    Case "OPT_RESULT_STOCK_SHEET_ARRAY"
-                        optiodatIndex.OPT_RESULT_STOCK_SHEET_ARRAY = optioLine
-                    Case "OPT_RESULT_X_AREA_ARRAY"
-                        optiodatIndex.OPT_RESULT_X_AREA_ARRAY = optioLine
-                    Case "OPT_RESULT_Y_AREA_ARRAY"
-                        optiodatIndex.OPT_RESULT_Y_AREA_ARRAY = optioLine
-                End Select
-            End If
-            optioLine = optioLine + 1
-        End While
-        'Parsing GlassArray
-        'For i = optiodatIndex.GLASS_ARRAY To optiodatIndex.OPT_PARAMETER - 1
-        '    If getTag(split(i)) = "REC#" Then
+    '            Select Case getHeadTag(split(optioLine))
+    '                Case "ITEM_ARRAY"
+    '                    optiodatIndex.ITEM_ARRAY = optioLine
+    '                    getItemArray(split, optioLine, numportion, numglass)
+    '                Case "GLASS_ARRAY"
+    '                    optiodatIndex.GLASS_ARRAY = optioLine
+    '                Case "OPT_PARAMETER"
+    '                    optiodatIndex.OPT_PARAMETER = optioLine
+    '                Case "OPT_RESULT_HEADER"
+    '                    optiodatIndex.OPT_RESULT_HEADER = optioLine
+    '                Case "OPT_RESULT_STOCK_SHEET_ARRAY"
+    '                    optiodatIndex.OPT_RESULT_STOCK_SHEET_ARRAY = optioLine
+    '                Case "OPT_RESULT_X_AREA_ARRAY"
+    '                    optiodatIndex.OPT_RESULT_X_AREA_ARRAY = optioLine
+    '                Case "OPT_RESULT_Y_AREA_ARRAY"
+    '                    optiodatIndex.OPT_RESULT_Y_AREA_ARRAY = optioLine
+    '            End Select
+    '        End If
+    '        optioLine = optioLine + 1
+    '    End While
+    'Parsing GlassArray
+    'For i = optiodatIndex.GLASS_ARRAY To optiodatIndex.OPT_PARAMETER - 1
+    '    If getTag(split(i)) = "REC#" Then
 
-        '    End If
-        'Next
-    End Sub
+    '    End If
+    'Next
+    ' End Sub
 
     'Public Sub ReadOptioDat(ByVal file As String, ByVal numportion As Integer, ByVal numglass As Integer)
     '    Dim optlines As String = System.IO.File.ReadAllText(file)
