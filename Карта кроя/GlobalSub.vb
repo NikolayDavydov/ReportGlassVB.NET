@@ -1,4 +1,14 @@
-﻿Module GlobalSub
+﻿Imports System.Collections.ObjectModel
+Module GlobalSub
+    Public Function SelectFile(ByVal files As ReadOnlyCollection(Of String), ByVal name As String) As String
+        SelectFile = ""
+        For Each f In files
+            If System.IO.Path.GetFileName(f).ToUpper = name Then
+                Return f
+            End If
+        Next
+    End Function
+
     Public Function TrfCoordRectangle(ByVal origPoint As System.Drawing.Point, ByVal origSize As System.Drawing.Size, _
                                            ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
         Dim newPoint As System.Drawing.Point

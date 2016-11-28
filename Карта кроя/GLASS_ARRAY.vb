@@ -1,4 +1,4 @@
-﻿Public Class GLASS_FORMAT 'Форматы стекол
+﻿Public Class GLASS_ARRAY 'Форматы стекол
     Public REC As Integer 'Номер записи
     Public CODE As String 'Наименование стекла
     Public DESCRIPTION As String

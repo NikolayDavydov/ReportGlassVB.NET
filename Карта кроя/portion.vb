@@ -1,8 +1,14 @@
 ﻿Imports System.Linq
 Imports System.Collections.ObjectModel
+Imports System.IO
+Imports Report.GlobalSub
+
 Public Class PORTION
-    Public GlassList As List(Of GLASS_FORMAT)
+    Public GlassList As List(Of GLASS)
+
     Private path As String
+    Private files As ReadOnlyCollection(Of String)
+    Private file As String
     Public ItemList As System.Collections.Generic.List(Of ITEM)
     Public Header As HEADER
     Public OptParametr As OPT_PARAMETER
@@ -15,9 +21,13 @@ Public Class PORTION
         path = _path
         'Dim path_tmp As String
         'path_tmp = Form1.FolderPath + "\" + path
-        Dim glass = From fold In System.IO.Directory.EnumerateDirectories(path, "?", System.IO.SearchOption.TopDirectoryOnly)
-        For Each folder In glass
-            Me.GlassList.Add(New GLASS(folder))
+        Dim glassesPath As String
+        glassesPath = path + "\1\"
+        Dim glasses = From fold2 In Directory.EnumerateDirectories(glassesPath, "*", SearchOption.TopDirectoryOnly)
+        For Each glass In glasses
+            files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.fil")
+            file = SelectFile(files, "OPTIO.DAT")
+            Me.GlassList.Add(New GLASS(file))
         Next
     End Sub
 End Class

@@ -245,14 +245,7 @@ Public Class Form1
             Return 0
         End If
     End Function
-    Private Function SelectFile(ByVal files As ReadOnlyCollection(Of String), ByVal name As String) As String
-        SelectFile = ""
-        For Each f In files
-            If System.IO.Path.GetFileName(f).ToUpper = name Then
-                Return f
-            End If
-        Next
-    End Function
+
     Public Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
 
