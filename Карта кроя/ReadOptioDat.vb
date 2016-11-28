@@ -1,6 +1,9 @@
 ﻿Public Class ReadOptioDat
     Private file As String 'Имя файла OptioDat
     Private split As String()
+    Public header() As String
+    Public opt_parameter() As String
+    Public opt_result_header() As String
     Public item_record_array() As Array
     Public glass_record_array() As Array
     Public stock_sheet_record_array() As Array
@@ -16,9 +19,9 @@
             Dim tag As String = headtag.getHeadTag(i)
             Select Case tag
                 Case "[---HEADER---]"
-                    Dim header As New SplitBySubstring()
-                    header.GetArray(headtag.array(i), "[")
-
+                    Dim head As New SplitBySubstring()
+                    head.GetArray(headtag.array(i), "[")
+                    header = head.array
                 Case "[---ITEM_ARRAY---]"
                     Dim item_array As New SplitBySubstring()
                     item_array.GetArray(headtag.array(i), "[REC#]")
@@ -40,13 +43,13 @@
                     Next
 
                 Case "[---OPT_PARAMETER---]"
-                    Dim opt_parameter As New SplitBySubstring()
-                    opt_parameter.GetArray(headtag.array(i), "[")
-
+                    Dim opt_param As New SplitBySubstring()
+                    opt_param.GetArray(headtag.array(i), "[")
+                    opt_parameter = opt_param.array
                 Case "[---OPT_RESULT_HEADER---]"
-                    Dim opt_result_header As New SplitBySubstring()
-                    opt_result_header.GetArray(headtag.array(i), "[")
-
+                    Dim opt_result_head As New SplitBySubstring()
+                    opt_result_head.GetArray(headtag.array(i), "[")
+                    opt_result_header = opt_result_head.array
                 Case "[---OPT_RESULT_STOCK_SHEET_ARRAY---]"
                     Dim stock_sheet_array As New SplitBySubstring()
                     stock_sheet_array.GetArray(headtag.array(i), "[STOCK_SHEET#]")

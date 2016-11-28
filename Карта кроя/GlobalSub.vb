@@ -1,4 +1,6 @@
 ﻿Imports System.Collections.ObjectModel
+Imports System.Globalization
+
 Module GlobalSub
     Public Function SelectFile(ByVal files As ReadOnlyCollection(Of String), ByVal name As String) As String
         SelectFile = ""
@@ -8,6 +10,42 @@ Module GlobalSub
             End If
         Next
     End Function
+    Public Function getValueInt(ByVal str) As Integer
+        Dim str_tmp As String
+        Dim getTag As String = Mid(str, 1, str.indexof("]"))
+        'str_tmp = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 2)
+        If Right(getTag, 1) = "#" Then
+            str_tmp = Right(str, Len(str) - str.indexof("]") - 2)
+            getValueInt = Convert.ToInt32(str_tmp)
+        ElseIf Right(getTag, 2) = "#." Then
+            str_tmp = Right(str, Len(str) - str.indexof("]") - 2)
+            str_tmp = Left(str_tmp, str_tmp.IndexOf("."))
+            getValueInt = Convert.ToInt32(str_tmp)
+        End If
+    End Function
+    Public Function AsFloat(ByVal s As String) As Double
+        Return Double.Parse(s.Replace(",", CultureInfo.InvariantCulture.NumberFormat.NumberDecimalSeparator), (CultureInfo.InvariantCulture))
+    End Function
+    Public Function getValueDouble(ByVal str) As Double
+        Dim str_tmp As String
+        Dim getTag As String = Mid(str, 1, str.indexof("]"))
+        'str_tmp = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 2)
+        If Right(getTag, 2) = "#." Then
+            str_tmp = Right(str, Len(str) - str.indexof("]") - 2)
+            str_tmp = Left(str_tmp, str_tmp.IndexOf("."))
+            getValueDouble = AsFloat(str_tmp)
+        End If
+    End Function
+    Public Function getValueStr(ByVal str)
+        Dim getTag As String = Mid(str, 1, str.indexof("]"))
+        'Dim str_tmp As String
+        getValueStr = ""
+        'getTag() = Mid(str, 1, str.indexof("]"))
+        If Right(getTag, 1) = "@" Then
+            getValueStr = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 1)
+        End If
+    End Function
+
 
     Public Function TrfCoordRectangle(ByVal origPoint As System.Drawing.Point, ByVal origSize As System.Drawing.Size, _
                                            ByVal szPlate As System.Drawing.Size) As System.Drawing.Point

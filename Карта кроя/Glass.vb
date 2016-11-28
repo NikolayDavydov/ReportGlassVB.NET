@@ -1,8 +1,4 @@
-﻿Imports System.Linq
-Imports System.Collections.ObjectModel
-Public Class GLASS
-    Private path As String
-    Private file As String
+﻿Public Class GLASS 'Форматы стекол
     Public REC As Integer 'Номер записи
     Public CODE As String 'Наименование стекла
     Public DESCRIPTION As String
@@ -18,39 +14,20 @@ Public Class GLASS
     Public ORIENTATION As Integer
 
 
-    Sub New(ByVal _file As String)
-        file = _file
-        Dim optiodat As New ReadOptioDat(file)
-
+    Sub New(ByVal _REC As Int32, ByVal _CODE As String, ByVal _DESCRIPTION As String, ByRef _RACK As String, _
+            ByVal _WIDTH As Int32, ByVal _HEIGHT As Int32, ByVal _QTY As Int32, ByVal _BOTTOM_TRIM As Int32, _
+            ByVal _RIGHT_TRIM As Int32, ByVal _TOP_TRIM As Int32, ByVal _LEFT_TRIM As Int32, ByVal _MIN_BREAK_DIST As Int32)
+        REC = _REC
+        CODE = _CODE
+        DESCRIPTION = _DESCRIPTION
+        RACK = _RACK
+        WIDTH = _WIDTH
+        HEIGHT = _HEIGHT
+        QTY = _QTY
+        BOTTOM_TRIM = _BOTTOM_TRIM
+        RIGHT_TRIM = _RIGHT_TRIM
+        TOP_TRIM = _TOP_TRIM
+        LEFT_TRIM = _LEFT_TRIM
+        MIN_BREAK_DIST = _MIN_BREAK_DIST
     End Sub
-    'Sub New(ByVal _REC As Int32, ByVal _CODE As String, ByVal _DESCRIPTION As String, ByRef _RACK As String, _
-    '        ByVal _WIDTH As Int32, ByVal _HEIGHT As Int32, ByVal _QTY As Int32, ByVal _BOTTOM_TRIM As Int32, _
-    '        ByVal _RIGHT_TRIM As Int32, ByVal _TOP_TRIM As Int32, ByVal _LEFT_TRIM As Int32, ByVal _MIN_BREAK_DIST As Int32)
-    '    REC = _REC
-    '    CODE = _CODE
-    '    DESCRIPTION = _DESCRIPTION
-    '    RACK = _RACK
-    '    WIDTH = _WIDTH
-    '    HEIGHT = _HEIGHT
-    '    QTY = _QTY
-    '    BOTTOM_TRIM = _BOTTOM_TRIM
-    '    RIGHT_TRIM = _RIGHT_TRIM
-    '    TOP_TRIM = _TOP_TRIM
-    '    LEFT_TRIM = _LEFT_TRIM
-    '    MIN_BREAK_DIST = _MIN_BREAK_DIST
-    'End Sub
 End Class
-
-'Public Class PORTION
-'    Public GlassList As List(Of GLASS_FORMAT)
-'    Private path As String
-'    Public ItemList As System.Collections.Generic.List(Of ITEM)
-'    Public Header As HEADER
-'    Public OptParametr As OPT_PARAMETER
-'    Public OptResultHeader As OPT_RESULT_HEADER
-'    Public OptResultStoockSheetList As System.Collections.Generic.List(Of OPT_RESULT_STOCK_SHEET)
-'    Public OptResultXAreaList As System.Collections.Generic.List(Of OPT_RESULT_X_AREA)
-'    Public OptResultYAreaList As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
-
-
-'End Class

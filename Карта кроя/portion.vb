@@ -4,8 +4,7 @@ Imports System.IO
 Imports Report.GlobalSub
 
 Public Class PORTION
-    Public GlassList As List(Of GLASS)
-
+    Public GlassList As List(Of GLASS_FOLDER)
     Private path As String
     Private files As ReadOnlyCollection(Of String)
     Private file As String
@@ -27,7 +26,7 @@ Public Class PORTION
         For Each glass In glasses
             files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.fil")
             file = SelectFile(files, "OPTIO.DAT")
-            Me.GlassList.Add(New GLASS(file))
+            Me.GlassList.Add(New GLASS_FOLDER(file))
         Next
     End Sub
 End Class
