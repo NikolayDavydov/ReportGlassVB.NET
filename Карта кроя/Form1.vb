@@ -257,6 +257,7 @@ Public Class Form1
 
 
         Dim rpt As New ReadOptioDat("c:\temp\optio.dat")
+
         'Dim frm2 As New Form
         'frm2.Name = "Form2"
         screenFormat.Width = Screen.PrimaryScreen.WorkingArea.Width
@@ -907,6 +908,7 @@ Public Class Form1
     End Sub
     Private Sub Report_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Report.Click
         If selectedFolder.Length > 0 Then
+            Dim rpt As New Report(FolderPath + "\" + selectedFolder)
             FindFiles(selectedFolder)
             CreateReport()
             CreateDocument()

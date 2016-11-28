@@ -181,7 +181,7 @@
     <Compile Include="Form2.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GLASS.vb" />
+    <Compile Include="GLASS_FORMAT.vb" />
     <Compile Include="GlobalSub.vb" />
     <Compile Include="HEADER.vb" />
     <Compile Include="ITEM.vb" />
