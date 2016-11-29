@@ -1,150 +1,180 @@
 ﻿Public Class ReadOptioDat
     Private file As String 'Имя файла OptioDat
     Private split As String()
-    Public header() As String
-    Public opt_parameter() As String
-    Public opt_result_header() As String
-    Public item_record_array() As Array
-    Public glass_record_array() As Array
-    Public stock_sheet_record_array() As Array
-    Public x_area_record_array() As Array
-    Public y_area_record_array() As Array
+    Public header As String
+    Public opt_parameter As String
+    Public opt_result_header As String
+    Public item_array As New List(Of String)
+    Public glass_array As New List(Of String)
+    Public stock_sheet_array As New List(Of String)
+    Public x_area_array As New List(Of String)
+    Public y_area_array As New List(Of String)
 
     Sub New(ByVal _file As String)
         file = _file
         Dim optlines As String = System.IO.File.ReadAllText(file)
-        Dim headtag As New SplitBySubstring()
-        headtag.GetArray(optlines, "[---")
-        For i = 0 To UBound(headtag.array, 1)
-            Dim tag As String = headtag.getHeadTag(i)
+        Dim split As New SplitBySubstring()
+        Dim arr() As String
+        arr = split.GetArray(optlines, "[---")
+        For i = 0 To UBound(arr, 1)
+            Dim tag As String = split.getHeadTag(arr(i))
             Select Case tag
                 Case "[---HEADER---]"
-                    Dim head As New SplitBySubstring()
-                    head.GetArray(headtag.array(i), "[")
-                    header = head.array
+                    header = arr(i)
                 Case "[---ITEM_ARRAY---]"
-                    Dim item_array As New SplitBySubstring()
-                    item_array.GetArray(headtag.array(i), "[REC#]")
-                    For j = 0 To UBound(item_array.array, 1)
-                        ReDim Preserve item_record_array(j)
-                        Dim item_record As New SplitBySubstring()
-                        item_record.GetArray(item_array.array(j), "[")
-                        item_record_array(j) = item_record.array
-                    Next
-
+                    'item_array = arr(i)
+                    item_array = split.GetList(arr(i), "[REC#]")
                 Case "[---GLASS_ARRAY---]"
-                    Dim glass_array As New SplitBySubstring()
-                    glass_array.GetArray(headtag.array(i), "[REC#]")
-                    For j = 0 To UBound(glass_array.array, 1)
-                        ReDim Preserve glass_record_array(j)
-                        Dim glass_record As New SplitBySubstring()
-                        glass_record.GetArray(glass_record.array(j), "[")
-                        glass_record_array(j) = glass_record.array
-                    Next
-
+                    glass_array = split.GetList(arr(i), "[REC#]")
                 Case "[---OPT_PARAMETER---]"
-                    Dim opt_param As New SplitBySubstring()
-                    opt_param.GetArray(headtag.array(i), "[")
-                    opt_parameter = opt_param.array
+                    opt_parameter = arr(i)
                 Case "[---OPT_RESULT_HEADER---]"
-                    Dim opt_result_head As New SplitBySubstring()
-                    opt_result_head.GetArray(headtag.array(i), "[")
-                    opt_result_header = opt_result_head.array
+                    opt_result_header = arr(i)
                 Case "[---OPT_RESULT_STOCK_SHEET_ARRAY---]"
-                    Dim stock_sheet_array As New SplitBySubstring()
-                    stock_sheet_array.GetArray(headtag.array(i), "[STOCK_SHEET#]")
-                    For j = 0 To UBound(stock_sheet_array.array, 1)
-                        ReDim Preserve stock_sheet_record_array(j)
-                        Dim stock_sheet_record As New SplitBySubstring()
-                        stock_sheet_record.GetArray(stock_sheet_record.array(j), "[")
-                        stock_sheet_record_array(j) = stock_sheet_record.array
-                    Next
-
+                    stock_sheet_array = split.GetList(arr(i), "[STOCK_SHEET#]")
                 Case "[---OPT_RESULT_X_AREA_ARRAY---]"
-                    Dim x_area_array As New SplitBySubstring()
-                    x_area_array.GetArray(headtag.array(i), "[X_AREA#]")
-                    For j = 0 To UBound(x_area_array.array, 1)
-                        ReDim Preserve x_area_record_array(j)
-                        Dim x_area_record As New SplitBySubstring()
-                        x_area_record.GetArray(x_area_array.array(j), "[")
-                        x_area_record_array(j) = x_area_record.array
-                    Next
-
+                    x_area_array = split.GetList(arr(i), "[X_AREA#]")
                 Case "[---OPT_RESULT_Y_AREA_ARRAY---]"
-                    Dim y_area_array As New SplitBySubstring()
-                    y_area_array.GetArray(headtag.array(i), "[Y_AREA#]")
-                    For j = 0 To UBound(y_area_array.array, 1)
-                        ReDim Preserve y_area_record_array(j)
-                        Dim y_area_record As New SplitBySubstring()
-                        y_area_record.GetArray(y_area_array.array(j), "[")
-                        y_area_record_array(j) = y_area_record.array
-                    Next
-
+                    y_area_array = split.GetList(arr(i), "[Y_AREA#]")
             End Select
         Next
-
-        'Dim tag As String = ""
-        'Dim tagType As String
-        'Dim strValue As String
-        'Dim intValue As Integer
-        'Dim optioLine As Int32
-        'optioLine = 0
-        'Dim maxLine As Int32 = UBound(split, 1)
-        'While optioLine < maxLine
-        '    If Left(split(optioLine), 3) = "---" Then
-        '        Select Case getHeadTag(split(optioLine))
-        '            Case "ITEM_ARRAY"
-        '                While getHeadTag(split(optioLine + 1)) <> "GLASS_ARRAY"
-        '                    optioLine = optioLine + 1
-        '                    While getTag(split(optioLine + 1)) <> "REC#"
-        '                        Dim item As ITEM_ARRAY
-        '                        With item
-        '                            tagType = getTagType(split(optioLine))
-        '                            tag = getTag(split(optioLine))
-        '                            If tagType = "#" Then
-        '                                intValue = getValueInt(split(optioLine))
-        '                                Select Case tag
-        '                                    Case "REC"
-        '                                        .REC = intValue
-        '                                    Case "BOX"
-        '                                        .BOX = intValue
-        '                                    Case "ITEM"
-        '                                        .ITEM = intValue
-        '                                    Case "OPT_GROUP"
-        '                                        .OPT_GROUP = intValue
-        '                                End Select
-        '                            ElseIf tagType = "@" Then
-        '                                strValue = getValueStr(split(optioLine))
-        '                                Select Case tag
-        '                                    Case "ORDER"
-        '                                        .ORDER = strValue
-        '                                    Case "CODE"
-        '                                        .CODE = strValue
-        '                                    Case "*RACK"
-        '                                        .RACK = strValue
-        '                                    Case "SHAPE_FILE"
-        '                                        .SHAPE_FILE = strValue
-        '                                End Select
-        '                            ElseIf tagType = "#." Then
-        '                                intValue = getValueInt(split(optioLine))
-        '                                Select Case tag
-        '                                    Case "WIDTH"
-        '                                        .WIDTH = intValue
-        '                                    Case "HEIGHT"
-        '                                        .HEIGHT = intValue
-        '                                End Select
-        '                            End If
-        '                        End With
-        '                    End While
-        '                End While
-
-        '        End Select
-        '    End If
-        '    optioLine = optioLine + 1
-        'End While
-
-
     End Sub
+
+    'Sub New(ByVal _file As String)
+    '    file = _file
+    '    Dim optlines As String = System.IO.File.ReadAllText(file)
+    '    Dim headtag As New SplitBySubstring()
+    '    headtag.GetArray(optlines, "[---")
+    '    For i = 0 To UBound(headtag.array, 1)
+    '        Dim tag As String = headtag.getHeadTag(i)
+    '        Select Case tag
+    '            Case "[---HEADER---]"
+    '                Dim head As New SplitBySubstring()
+    '                head.GetArray(arr(i), "[")
+    '                header = head.array
+    '            Case "[---ITEM_ARRAY---]"
+    '                Dim item_array As New SplitBySubstring()
+    '                item_array.GetArray(arr(i), "[REC#]")
+    '                For j = 0 To UBound(item_array.array, 1)
+    '                    ReDim Preserve item_record_array(j)
+    '                    Dim item_record As New SplitBySubstring()
+    '                    item_record.GetArray(item_array.array(j), "[")
+    '                    item_record_array(j) = item_record.array
+    '                Next
+
+    '            Case "[---GLASS_ARRAY---]"
+    '                Dim glass_array As New SplitBySubstring()
+    '                glass_array.GetArray(arr(i), "[REC#]")
+    '                For j = 0 To UBound(glass_array.array, 1)
+    '                    ReDim Preserve glass_record_array(j)
+    '                    Dim glass_record As New SplitBySubstring()
+    '                    glass_record.GetArray(glass_record.array(j), "[")
+    '                    glass_record_array(j) = glass_record.array
+    '                Next
+
+    '            Case "[---OPT_PARAMETER---]"
+    '                Dim opt_param As New SplitBySubstring()
+    '                opt_param.GetArray(arr(i), "[")
+    '                opt_parameter = opt_param.array
+    '            Case "[---OPT_RESULT_HEADER---]"
+    '                Dim opt_result_head As New SplitBySubstring()
+    '                opt_result_head.GetArray(arr(i), "[")
+    '                opt_result_header = opt_result_head.array
+    '            Case "[---OPT_RESULT_STOCK_SHEET_ARRAY---]"
+    '                Dim stock_sheet_array As New SplitBySubstring()
+    '                stock_sheet_array.GetArray(arr(i), "[STOCK_SHEET#]")
+    '                For j = 0 To UBound(stock_sheet_array.array, 1)
+    '                    ReDim Preserve stock_sheet_record_array(j)
+    '                    Dim stock_sheet_record As New SplitBySubstring()
+    '                    stock_sheet_record.GetArray(stock_sheet_record.array(j), "[")
+    '                    stock_sheet_record_array(j) = stock_sheet_record.array
+    '                Next
+
+    '            Case "[---OPT_RESULT_X_AREA_ARRAY---]"
+    '                Dim x_area_array As New SplitBySubstring()
+    '                x_area_array.GetArray(arr(i), "[X_AREA#]")
+    '                For j = 0 To UBound(x_area_array.array, 1)
+    '                    ReDim Preserve x_area_record_array(j)
+    '                    Dim x_area_record As New SplitBySubstring()
+    '                    x_area_record.GetArray(x_area_array.array(j), "[")
+    '                    x_area_record_array(j) = x_area_record.array
+    '                Next
+
+    '            Case "[---OPT_RESULT_Y_AREA_ARRAY---]"
+    '                Dim y_area_array As New SplitBySubstring()
+    '                y_area_array.GetArray(arr(i), "[Y_AREA#]")
+    '                For j = 0 To UBound(y_area_array.array, 1)
+    '                    ReDim Preserve y_area_record_array(j)
+    '                    Dim y_area_record As New SplitBySubstring()
+    '                    y_area_record.GetArray(y_area_array.array(j), "[")
+    '                    y_area_record_array(j) = y_area_record.array
+    '                Next
+
+    '        End Select
+    '    Next
+
+    '    'Dim tag As String = ""
+    '    'Dim tagType As String
+    '    'Dim strValue As String
+    '    'Dim intValue As Integer
+    '    'Dim optioLine As Int32
+    '    'optioLine = 0
+    '    'Dim maxLine As Int32 = UBound(split, 1)
+    '    'While optioLine < maxLine
+    '    '    If Left(split(optioLine), 3) = "---" Then
+    '    '        Select Case getHeadTag(split(optioLine))
+    '    '            Case "ITEM_ARRAY"
+    '    '                While getHeadTag(split(optioLine + 1)) <> "GLASS_ARRAY"
+    '    '                    optioLine = optioLine + 1
+    '    '                    While getTag(split(optioLine + 1)) <> "REC#"
+    '    '                        Dim item As ITEM_ARRAY
+    '    '                        With item
+    '    '                            tagType = getTagType(split(optioLine))
+    '    '                            tag = getTag(split(optioLine))
+    '    '                            If tagType = "#" Then
+    '    '                                intValue = getValueInt(split(optioLine))
+    '    '                                Select Case tag
+    '    '                                    Case "REC"
+    '    '                                        .REC = intValue
+    '    '                                    Case "BOX"
+    '    '                                        .BOX = intValue
+    '    '                                    Case "ITEM"
+    '    '                                        .ITEM = intValue
+    '    '                                    Case "OPT_GROUP"
+    '    '                                        .OPT_GROUP = intValue
+    '    '                                End Select
+    '    '                            ElseIf tagType = "@" Then
+    '    '                                strValue = getValueStr(split(optioLine))
+    '    '                                Select Case tag
+    '    '                                    Case "ORDER"
+    '    '                                        .ORDER = strValue
+    '    '                                    Case "CODE"
+    '    '                                        .CODE = strValue
+    '    '                                    Case "*RACK"
+    '    '                                        .RACK = strValue
+    '    '                                    Case "SHAPE_FILE"
+    '    '                                        .SHAPE_FILE = strValue
+    '    '                                End Select
+    '    '                            ElseIf tagType = "#." Then
+    '    '                                intValue = getValueInt(split(optioLine))
+    '    '                                Select Case tag
+    '    '                                    Case "WIDTH"
+    '    '                                        .WIDTH = intValue
+    '    '                                    Case "HEIGHT"
+    '    '                                        .HEIGHT = intValue
+    '    '                                End Select
+    '    '                            End If
+    '    '                        End With
+    '    '                    End While
+    '    '                End While
+
+    '    '        End Select
+    '    '    End If
+    '    '    optioLine = optioLine + 1
+    '    'End While
+
+
+    'End Sub
     Private Function getHeadTag(ByVal str) As String
         getHeadTag = ""
         If Left(str, 3) = "---" Then

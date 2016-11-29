@@ -4,22 +4,24 @@ Imports System.Collections.ObjectModel
 Public Class GLASS_FOLDER
     Private path As String
     Private file As String
+    Private nameGlass As String
     Public header As HEADER
     Public opt_parameter As OPT_PARAMETER
-    Public opt_result As OPT_RESULT_HEADER
-    Public REC As Integer 'Номер записи
-    Public CODE As String 'Наименование стекла
-    Public DESCRIPTION As String
-    Public RACK As String 'Ячейка на складе
-    Public WIDTH As Double 'Размер необлекаленного листа
-    Public HEIGHT As Double 'Размер необлекаленного листа
-    Public QTY As Integer 'Количество на складе
-    Public BOTTOM_TRIM As Double 'Кромки облекаливания
-    Public RIGHT_TRIM As Double 'Кромки облекаливания
-    Public TOP_TRIM As Double 'Кромки облекаливания
-    Public LEFT_TRIM As Double   'Кромки облекаливания
-    Public MIN_BREAK_DIST As Double 'Дистанция разлома
-    Public ORIENTATION As Integer
+    Public opt_result_header As OPT_RESULT_HEADER
+    Public opt_result_stock_sheet_array As List(Of OPT_RESULT_STOCK_SHEET)
+    'Public REC As Integer 'Номер записи
+    'Public CODE As String 'Наименование стекла
+    'Public DESCRIPTION As String
+    'Public RACK As String 'Ячейка на складе
+    'Public WIDTH As Double 'Размер необлекаленного листа
+    'Public HEIGHT As Double 'Размер необлекаленного листа
+    'Public QTY As Integer 'Количество на складе
+    'Public BOTTOM_TRIM As Double 'Кромки облекаливания
+    'Public RIGHT_TRIM As Double 'Кромки облекаливания
+    'Public TOP_TRIM As Double 'Кромки облекаливания
+    'Public LEFT_TRIM As Double   'Кромки облекаливания
+    'Public MIN_BREAK_DIST As Double 'Дистанция разлома
+    'Public ORIENTATION As Integer
 
 
     Sub New(ByVal _file As String)
@@ -27,7 +29,7 @@ Public Class GLASS_FOLDER
         Dim optiodat As New ReadOptioDat(file)
         header = New HEADER(optiodat.header)
         opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
-        opt_result = New OPT_RESULT_HEADER(optiodat.opt_result_header)
+        opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
 
     End Sub
     'Sub New(ByVal _REC As Int32, ByVal _CODE As String, ByVal _DESCRIPTION As String, ByRef _RACK As String, _
@@ -48,16 +50,3 @@ Public Class GLASS_FOLDER
     'End Sub
 End Class
 
-'Public Class PORTION
-'    Public GlassList As List(Of GLASS_FORMAT)
-'    Private path As String
-'    Public ItemList As System.Collections.Generic.List(Of ITEM)
-'    Public Header As HEADER
-'    Public OptParametr As OPT_PARAMETER
-'    Public OptResultHeader As OPT_RESULT_HEADER
-'    Public OptResultStoockSheetList As System.Collections.Generic.List(Of OPT_RESULT_STOCK_SHEET)
-'    Public OptResultXAreaList As System.Collections.Generic.List(Of OPT_RESULT_X_AREA)
-'    Public OptResultYAreaList As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
-
-
-'End Class
