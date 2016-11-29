@@ -7,8 +7,14 @@
     Public X_AREA_TYPE_QTY As Integer 'Общее количество субпластин
     Public X_AREA_REF As System.Collections.Generic.List(Of Integer) 'Список субпластин
 
-    Sub New()
-
+    Sub New(ByVal _str As String)
+        Dim str As String = _str
+        Dim split As New SplitBySubstring()
+        Dim lst As List(Of String)
+        lst = split.GetList(str, "[")
+        For Each itm As String In lst
+            Select 
+        Next
     End Sub
 
     'Sub New(ByVal _STOCK_SHEET As Int32, ByVal _GLASS_REF As Int32, ByVal _REMNANT_WIDTH As Int32, ByVal _X_AREA_QTY As Int32, _

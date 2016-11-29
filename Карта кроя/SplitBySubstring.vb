@@ -78,7 +78,11 @@
         End If
 
     End Function
-    Private Function getTag(ByVal str) As String
+    Public Function getTag(ByVal str) As String
+        Dim str As 
+        If str.startswith() Then
+
+        End If
         getTag = Mid(str, str.indexof("[---"), str.indexof("---]"))
         If Right(getTag, 1) = "@" Or Right(getTag, 1) = "#" Then
             getTag = Left(getTag, Len(getTag) - 1)

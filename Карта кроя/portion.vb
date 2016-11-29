@@ -18,8 +18,6 @@ Public Class PORTION
 
     Sub New(ByVal _path As String)
         path = _path
-        'Dim path_tmp As String
-        'path_tmp = Form1.FolderPath + "\" + path
         Dim glassesPath As String
         glassesPath = path + "\1\"
         Dim glasses = From fold2 In Directory.EnumerateDirectories(glassesPath, "*", SearchOption.TopDirectoryOnly)
