@@ -12,6 +12,7 @@ Public Class PORTION
     Public Header As HEADER
     Public OptParametr As OPT_PARAMETER
     Public OptResultHeader As OPT_RESULT_HEADER
+
     Public OptResultStoockSheetList As System.Collections.Generic.List(Of OPT_RESULT_STOCK_SHEET)
     Public OptResultXAreaList As System.Collections.Generic.List(Of OPT_RESULT_X_AREA)
     Public OptResultYAreaList As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
@@ -24,7 +25,7 @@ Public Class PORTION
         For Each glass In glasses
             files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.fil")
             file = SelectFile(files, "OPTIO.DAT")
-            'Me.GlassList.Add(New GLASS_FOLDER(file))
+            Me.GlassList.Add(New GLASS_FOLDER(file))
         Next
     End Sub
 End Class

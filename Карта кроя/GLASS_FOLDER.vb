@@ -9,6 +9,7 @@ Public Class GLASS_FOLDER
     Public header As HEADER
     Public opt_parameter As OPT_PARAMETER
     Public opt_result_header As OPT_RESULT_HEADER
+    Public GlassArray As New List(Of GLASS)
     Public opt_result_stock_sheet_array As New List(Of OPT_RESULT_STOCK_SHEET)
     'Public REC As Integer 'Номер записи
     'Public CODE As String 'Наименование стекла
@@ -29,8 +30,11 @@ Public Class GLASS_FOLDER
         header = New HEADER(optiodat.header)
         opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
         opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
-        For Each stock_sheet In optiodat.stock_sheet_array
-            opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(stock_sheet))
+        For Each item In optiodat.glass_array
+            GlassArray.Add(New GLASS(item))
+        Next
+        For Each item In optiodat.stock_sheet_array
+            opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(item))
         Next
 
     End Sub
