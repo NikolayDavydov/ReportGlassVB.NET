@@ -248,8 +248,8 @@ Public Class Form1
 
     Public Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
-
-        Dim rpt As New ReadOptioDat("c:\temp\optio.dat")
+        Dim rpt As New Report("C:\temp\Прф 1019")
+        'Dim rpt As New ReadOptioDat("c:\temp\optio.dat")
 
         'Dim frm2 As New Form
         'frm2.Name = "Form2"

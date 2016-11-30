@@ -24,7 +24,7 @@ Public Class PORTION
         For Each glass In glasses
             files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.fil")
             file = SelectFile(files, "OPTIO.DAT")
-            Me.GlassList.Add(New GLASS_FOLDER(file))
+            'Me.GlassList.Add(New GLASS_FOLDER(file))
         Next
     End Sub
 End Class

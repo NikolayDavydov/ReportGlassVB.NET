@@ -1,38 +1,38 @@
 ﻿Public Class SplitBySubstring
-    Public Function GetArray(ByVal _str As String, ByVal _separator As String) As String()
-        Dim str As String
-        Dim separator As String
-        Dim array() As String
-        Dim lenstr As Integer
-        Dim lenseparator As Integer
-        'убираем перевод строки
-        str = _str
-        separator = _separator
-        lenstr = Len(str)
-        lenseparator = Len(separator)
-        str = StringPreprocess(str) 'Убираем переводы строк
-        Dim mid1 As String
-        Dim mid2 As String
-        Dim k As Integer = 0
-        ReDim Preserve array(k)
-        For i = 1 To lenstr - lenseparator
-            mid1 = Mid(str, i, lenseparator).ToUpper
-            If mid1 = separator.ToUpper Then
-                For j = i + lenseparator To lenstr - lenseparator
-                    mid2 = Mid(str, j, lenseparator).ToUpper
-                    If mid2 = separator.ToUpper Or j = lenstr - lenseparator Then
-                        If k > UBound(array, 1) Then
-                            ReDim Preserve array(k)
-                        End If
-                        array(k) = Mid(str, i, j - i)
-                        k = k + 1
-                        Exit For
-                    End If
-                Next
-            End If
-        Next
-        Return array
-    End Function
+    'Public Function GetArray(ByVal _str As String, ByVal _separator As String) As String()
+    '    Dim str As String
+    '    Dim separator As String
+    '    Dim array() As String
+    '    Dim lenstr As Integer
+    '    Dim lenseparator As Integer
+    '    'убираем перевод строки
+    '    str = _str
+    '    separator = _separator
+    '    lenstr = Len(str)
+    '    lenseparator = Len(separator)
+    '    str = StringPreprocess(str) 'Убираем переводы строк
+    '    Dim mid1 As String
+    '    Dim mid2 As String
+    '    Dim k As Integer = 0
+    '    ReDim Preserve array(k)
+    '    For i = 1 To lenstr - lenseparator
+    '        mid1 = Mid(str, i, lenseparator).ToUpper
+    '        If mid1 = separator.ToUpper Then
+    '            For j = i + lenseparator To lenstr - lenseparator
+    '                mid2 = Mid(str, j, lenseparator).ToUpper
+    '                If mid2 = separator.ToUpper Or j = lenstr - lenseparator Then
+    '                    If k > UBound(array, 1) Then
+    '                        ReDim Preserve array(k)
+    '                    End If
+    '                    array(k) = Mid(str, i, j - i)
+    '                    k = k + 1
+    '                    Exit For
+    '                End If
+    '            Next
+    '        End If
+    '    Next
+    '    Return array
+    'End Function
     Public Function GetList(ByVal _str As String, ByVal _separator As String) As List(Of String)
         Dim str As String
         Dim separator As String
@@ -78,17 +78,18 @@
         End If
 
     End Function
-    Public Function getTag(ByVal str) As String
-        Dim str As 
-        If str.startswith() Then
-
+    Public Function getTag(ByVal _str) As String
+        Dim str As String
+        str = _str
+        If Not str.StartsWith("[---") Then
+            str = Mid(str, str.IndexOf("["), str.IndexOf("]"))
+            If Right(str, 1) = "@" Or Right(str, 1) = "#" Then
+                str = Left(str, Len(str) - 1)
+            ElseIf Right(str, 2) = "#." Then
+                str = Left(str, Len(str) - 2)
+            End If
         End If
-        getTag = Mid(str, str.indexof("[---"), str.indexof("---]"))
-        If Right(getTag, 1) = "@" Or Right(getTag, 1) = "#" Then
-            getTag = Left(getTag, Len(getTag) - 1)
-        ElseIf Right(getTag, 2) = "#." Then
-            getTag = Left(getTag, Len(getTag) - 2)
-        End If
+        Return str
     End Function
     Private Function getValueStr(ByVal str)
         Dim getTag As String = Mid(str, 1, str.indexof("]"))

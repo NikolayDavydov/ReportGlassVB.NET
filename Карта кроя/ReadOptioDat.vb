@@ -14,28 +14,28 @@
         file = _file
         Dim optlines As String = System.IO.File.ReadAllText(file)
         Dim split As New SplitBySubstring()
-        Dim arr() As String
-        arr = split.GetArray(optlines, "[---")
-        For i = 0 To UBound(arr, 1)
-            Dim tag As String = split.getHeadTag(arr(i))
+        Dim lst As New List(Of String)
+        lst = split.GetList(optlines, "[---")
+
+        For Each l In lst
+            Dim tag As String = split.getHeadTag(l)
             Select Case tag
                 Case "[---HEADER---]"
-                    header = arr(i)
+                    header = l
                 Case "[---ITEM_ARRAY---]"
-                    'item_array = arr(i)
-                    item_array = split.GetList(arr(i), "[REC#]")
+                    item_array = split.GetList(l, "[REC#]")
                 Case "[---GLASS_ARRAY---]"
-                    glass_array = split.GetList(arr(i), "[REC#]")
+                    glass_array = split.GetList(l, "[REC#]")
                 Case "[---OPT_PARAMETER---]"
-                    opt_parameter = arr(i)
+                    opt_parameter = l
                 Case "[---OPT_RESULT_HEADER---]"
-                    opt_result_header = arr(i)
+                    opt_result_header = l
                 Case "[---OPT_RESULT_STOCK_SHEET_ARRAY---]"
-                    stock_sheet_array = split.GetList(arr(i), "[STOCK_SHEET#]")
+                    stock_sheet_array = split.GetList(l, "[STOCK_SHEET#]")
                 Case "[---OPT_RESULT_X_AREA_ARRAY---]"
-                    x_area_array = split.GetList(arr(i), "[X_AREA#]")
+                    x_area_array = split.GetList(l, "[X_AREA#]")
                 Case "[---OPT_RESULT_Y_AREA_ARRAY---]"
-                    y_area_array = split.GetList(arr(i), "[Y_AREA#]")
+                    y_area_array = split.GetList(l, "[Y_AREA#]")
             End Select
         Next
     End Sub

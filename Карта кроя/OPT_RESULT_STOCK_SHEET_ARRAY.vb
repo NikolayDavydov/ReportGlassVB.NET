@@ -13,7 +13,15 @@
         Dim lst As List(Of String)
         lst = split.GetList(str, "[")
         For Each itm As String In lst
-            Select 
+            Select Case split.getTag(itm)
+                'Case ""
+
+                '    Case
+                '    Case
+                '    Case
+                '    Case
+
+            End Select
         Next
     End Sub
 
