@@ -21,35 +21,36 @@
         For Each itm As String In lst
             Select Case split.getTag(itm)
                 Case "REC"
+                    REC = getValueInt(itm)
                 Case "CODE"
+                    CODE = getValueStr(itm)
                 Case "DESCRIPTION"
+                    DESCRIPTION = getValueStr(itm)
                 Case "RACK"
+                    RACK = getValueStr(itm)
                 Case "WIDTH"
+                    WIDTH = getValueDouble(itm)
                 Case "HEIGHT"
+                    HEIGHT = getValueDouble(itm)
                 Case "QTY"
+                    QTY = getValueInt(itm)
                 Case "BOTTOM_TRIM"
+                    BOTTOM_TRIM = getValueDouble(itm)
                 Case "RIGHT_TRIM"
+                    RIGHT_TRIM = getValueDouble(itm)
                 Case "TOP_TRIM"
+                    TOP_TRIM = getValueDouble(itm)
                 Case "LEFT_TRIM"
+                    LEFT_TRIM = getValueDouble(itm)
                 Case "MIN_BREAK_DIST"
+                    MIN_BREAK_DIST = getValueDouble(itm)
                 Case "ORIENTATION"
+                    ORIENTATION = getValueInt(itm)
             End Select
         Next
     End Sub
-    'Sub New(ByVal _REC As Int32, ByVal _CODE As String, ByVal _DESCRIPTION As String, ByRef _RACK As String, _
-    '        ByVal _WIDTH As Int32, ByVal _HEIGHT As Int32, ByVal _QTY As Int32, ByVal _BOTTOM_TRIM As Int32, _
-    '        ByVal _RIGHT_TRIM As Int32, ByVal _TOP_TRIM As Int32, ByVal _LEFT_TRIM As Int32, ByVal _MIN_BREAK_DIST As Int32)
-    '    REC = _REC
-    '    CODE = _CODE
-    '    DESCRIPTION = _DESCRIPTION
-    '    RACK = _RACK
-    '    WIDTH = _WIDTH
-    '    HEIGHT = _HEIGHT
-    '    QTY = _QTY
-    '    BOTTOM_TRIM = _BOTTOM_TRIM
-    '    RIGHT_TRIM = _RIGHT_TRIM
-    '    TOP_TRIM = _TOP_TRIM
-    '    LEFT_TRIM = _LEFT_TRIM
-    '    MIN_BREAK_DIST = _MIN_BREAK_DIST
-    'End Sub
+
+
+
+
 End Class

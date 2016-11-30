@@ -53,13 +53,27 @@
         End If
         Return str
     End Function
-    Private Function getValueStr(ByVal str)
-        Dim getTag As String = Mid(str, 1, str.indexof("]"))
+    Private Function getValueStr(ByVal _str)
+        Dim getTag As String = Mid(_str, 1, _str.indexof("]"))
         'Dim str_tmp As String
         getValueStr = ""
         'getTag() = Mid(str, 1, str.indexof("]"))
         If Right(getTag, 1) = "@" Then
-            getValueStr = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 1)
+            getValueStr = Microsoft.VisualBasic.Right(_str, Len(_str) - _str.indexof("]") - 1)
+        End If
+    End Function
+    Public Function getValueDouble(ByVal _str) As Double
+        Dim str As String = _str
+        Dim str_tmp As String
+        Dim getTag As String = Mid(Str, 1, Str.indexof("]"))
+        'str_tmp = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 2)
+        If Right(getTag, 1) = "#" Then
+            str_tmp = Right(Str, Len(Str) - Str.indexof("]") - 2)
+            getValueInt = Convert.ToInt32(str_tmp)
+        ElseIf Right(getTag, 2) = "#." Then
+            str_tmp = Right(Str, Len(Str) - Str.indexof("]") - 2)
+            str_tmp = Left(str_tmp, str_tmp.IndexOf("."))
+            getValueInt = Convert.ToInt32(str_tmp)
         End If
     End Function
     Private Function getValueInt(ByVal str) As Integer
