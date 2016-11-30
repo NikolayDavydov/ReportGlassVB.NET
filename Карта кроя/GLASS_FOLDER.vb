@@ -6,6 +6,7 @@ Public Class GLASS_FOLDER
     Private path As String
     Private file As String
     Private nameGlass As String
+    Private optiodat As ReadOptioDat
     Public header As HEADER
     Public opt_parameter As OPT_PARAMETER
     Public opt_result_header As OPT_RESULT_HEADER
@@ -26,7 +27,7 @@ Public Class GLASS_FOLDER
     'Public ORIENTATION As Integer
     Sub New(ByVal _file As String)
         file = _file
-        Dim optiodat As New ReadOptioDat(file)
+        optiodat = New ReadOptioDat(file)
         header = New HEADER(optiodat.header)
         opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
         opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
@@ -38,21 +39,14 @@ Public Class GLASS_FOLDER
         Next
 
     End Sub
-    'Sub New(ByVal _REC As Int32, ByVal _CODE As String, ByVal _DESCRIPTION As String, ByRef _RACK As String, _
-    '        ByVal _WIDTH As Int32, ByVal _HEIGHT As Int32, ByVal _QTY As Int32, ByVal _BOTTOM_TRIM As Int32, _
-    '        ByVal _RIGHT_TRIM As Int32, ByVal _TOP_TRIM As Int32, ByVal _LEFT_TRIM As Int32, ByVal _MIN_BREAK_DIST As Int32)
-    '    REC = _REC
-    '    CODE = _CODE
-    '    DESCRIPTION = _DESCRIPTION
-    '    RACK = _RACK
-    '    WIDTH = _WIDTH
-    '    HEIGHT = _HEIGHT
-    '    QTY = _QTY
-    '    BOTTOM_TRIM = _BOTTOM_TRIM
-    '    RIGHT_TRIM = _RIGHT_TRIM
-    '    TOP_TRIM = _TOP_TRIM
-    '    LEFT_TRIM = _LEFT_TRIM
-    '    MIN_BREAK_DIST = _MIN_BREAK_DIST
-    'End Sub
+    Public Function getXAreaRef(ByVal id As Integer) As String
+        getXAreaRef = optiodat.x_area_array(id)
+    End Function
+    Public Function getYAreaRef(ByVal id As Integer) As String
+        getYAreaRef = optiodat.y_area_array(id)
+    End Function
+    Public Function getItem(ByVal id As Integer) As String
+        getItem = optiodat.item_array(id)
+    End Function
 End Class
 
