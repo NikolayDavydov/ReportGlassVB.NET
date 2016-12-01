@@ -181,11 +181,8 @@
     <Compile Include="Form2.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GLASS_ARRAY.vb" />
     <Compile Include="GLASS_FOLDER.vb" />
-    <Compile Include="GLASS.vb" />
     <Compile Include="GlobalSub.vb" />
-    <Compile Include="HEADER.vb" />
     <Compile Include="ITEM.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -202,12 +199,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="OPT_PARAMETER.vb" />
-    <Compile Include="OPT_RESULT_HEADER.vb" />
-    <Compile Include="OPT_RESULT_STOCK_SHEET_ARRAY.vb" />
-    <Compile Include="OPT_RESULT_U_V_W_Z_AREA.vb" />
-    <Compile Include="OPT_RESULT_X_AREA.vb" />
-    <Compile Include="OPT_RESULT_Y_AREA.vb" />
     <Compile Include="PORTION.vb" />
     <Compile Include="ReadOptioDat.vb" />
     <Compile Include="Report.vb" />
@@ -234,6 +225,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="111.il" />
     <None Include="app.config" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">

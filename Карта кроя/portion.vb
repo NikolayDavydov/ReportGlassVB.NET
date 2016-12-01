@@ -1,7 +1,7 @@
 ﻿Imports System.Linq
 Imports System.Collections.ObjectModel
 Imports System.IO
-Imports Report.GlobalSub
+Imports Report.GLASS_FOLDER
 
 Public Class PORTION
     Public GlassList As List(Of GLASS_FOLDER)
@@ -29,3 +29,4 @@ Public Class PORTION
         Next
     End Sub
 End Class
+
