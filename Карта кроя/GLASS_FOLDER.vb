@@ -4,6 +4,7 @@ Imports System.IO
 Imports Report
 Imports Report.GLASS_FOLDER
 Imports Report.GlobalSub
+Imports Report.Form1
 Public Class GLASS_FOLDER
     Public Structure optioDat_structure
         Public header As String
@@ -176,6 +177,7 @@ Public Class GLASS_FOLDER
         End Sub
     End Class
     Public Class OPT_RESULT_STOCK_SHEET
+        Protected OPT As OPT_RESULT_STOCK_SHEET
         Public STOCK_SHEET As Integer 'номер листа
         Public GLASS_REF As Integer 'номер формата стекла на складе стекла
         Public REMNANT_WIDTH As Double 'Остаток на листе
@@ -188,8 +190,6 @@ Public Class GLASS_FOLDER
             Dim str As String = _str
             Dim split As New SplitBySubstring()
             Dim lst As List(Of String)
-
-
             lst = split.GetList(str, "[")
             For Each itm As String In lst
                 Select Case split.getTag(itm)
@@ -209,106 +209,113 @@ Public Class GLASS_FOLDER
                         Dim xAreaRef As Integer 'Номер X_AREA_REF
                         xAreaRef = getValueInt(itm)
                         Dim xAreaString As String
-                    xAreaString =
-                    X_AREA_REF.Add(New OPT_RESULT_X_AREA(itm)
+                        xAreaString = optiodat.getXAreaRef(xAreaRef)
+                        X_AREA_REF.Add(New OPT_RESULT_X_AREA(xAreaString))
                 End Select
             Next
         End Sub
     End Class
-    Public Class OPT_RESULT_HEADER
-        Public str As String
-        Public OPT_AREA_GROSS As Integer
-        Public OPT_AREA_NET As Integer
-        Public OPT_WASTE As Double
-        Public REMNANT_HEIGHT As Double
-        Public REMNANT_WIDTH As Double
-        Public STOCK_SHEET_QTY As Integer
-        Public STOCK_SHEET_TYPE_QTY As Integer
-        Public USED_OPT_PARA As String
-        Public USED_STRATEGY As Integer
-        Public X_AREA_TYPE_QTY As Integer
-        Sub New(ByVal _str As String)
-            str = _str
-            'For i = 0 To UBound(arr, 1)
-            '    If arr(i).StartsWith("[USED_STRATEGY#]=") Then
-            '        USED_STRATEGY = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[USED_OPT_PARA@]=") Then
-            '        USED_OPT_PARA = getValueStr(arr(i))
-            '    ElseIf arr(i).StartsWith("[OPT_AREA_NET#]=") Then
-            '        OPT_AREA_NET = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[OPT_AREA_GROSS#]=") Then
-            '        OPT_AREA_GROSS = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[OPT_WASTE#]=") Then
-            '        OPT_WASTE = getValueDouble(arr(i))
-            '    ElseIf arr(i).StartsWith("[REMNANT_WIDTH#.]=") Then
-            '        REMNANT_WIDTH = getValueDouble(arr(i))
-            '    ElseIf arr(i).StartsWith("[REMNANT_HEIGHT#.]=") Then
-            '        REMNANT_HEIGHT = getValueDouble(arr(i))
-            '    ElseIf arr(i).StartsWith("[STOCK_SHEET_QTY#]=") Then
-            '        STOCK_SHEET_QTY = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[STOCK_SHEET_TYPE_QTY#]=") Then
-            '        STOCK_SHEET_TYPE_QTY = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[X_AREA_TYPE_QTY#]=") Then
-            '        X_AREA_TYPE_QTY = getValueInt(arr(i))
-            '    End If
-            'Next
-        End Sub
-    End Class
-    Public Class OPT_RESULT_X_AREA
-        Public X_AREA As Integer
-        Public WIDTH As Double
-        Public HEIGHT As Double
-        Public Y_AREA_QTY As Integer
-        Public Y_AREA_TYPE_QTY As Integer
-        Public Y_AREA_REF As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
-        'Public Y_AREA_CLASS As List(Of OPT_RESULT_Y_AREA)
+        Public Class OPT_RESULT_HEADER
+            Public str As String
+            Public OPT_AREA_GROSS As Integer
+            Public OPT_AREA_NET As Integer
+            Public OPT_WASTE As Double
+            Public REMNANT_HEIGHT As Double
+            Public REMNANT_WIDTH As Double
+            Public STOCK_SHEET_QTY As Integer
+            Public STOCK_SHEET_TYPE_QTY As Integer
+            Public USED_OPT_PARA As String
+            Public USED_STRATEGY As Integer
+            Public X_AREA_TYPE_QTY As Integer
+            Sub New(ByVal _str As String)
+                str = _str
+                'For i = 0 To UBound(arr, 1)
+                '    If arr(i).StartsWith("[USED_STRATEGY#]=") Then
+                '        USED_STRATEGY = getValueInt(arr(i))
+                '    ElseIf arr(i).StartsWith("[USED_OPT_PARA@]=") Then
+                '        USED_OPT_PARA = getValueStr(arr(i))
+                '    ElseIf arr(i).StartsWith("[OPT_AREA_NET#]=") Then
+                '        OPT_AREA_NET = getValueInt(arr(i))
+                '    ElseIf arr(i).StartsWith("[OPT_AREA_GROSS#]=") Then
+                '        OPT_AREA_GROSS = getValueInt(arr(i))
+                '    ElseIf arr(i).StartsWith("[OPT_WASTE#]=") Then
+                '        OPT_WASTE = getValueDouble(arr(i))
+                '    ElseIf arr(i).StartsWith("[REMNANT_WIDTH#.]=") Then
+                '        REMNANT_WIDTH = getValueDouble(arr(i))
+                '    ElseIf arr(i).StartsWith("[REMNANT_HEIGHT#.]=") Then
+                '        REMNANT_HEIGHT = getValueDouble(arr(i))
+                '    ElseIf arr(i).StartsWith("[STOCK_SHEET_QTY#]=") Then
+                '        STOCK_SHEET_QTY = getValueInt(arr(i))
+                '    ElseIf arr(i).StartsWith("[STOCK_SHEET_TYPE_QTY#]=") Then
+                '        STOCK_SHEET_TYPE_QTY = getValueInt(arr(i))
+                '    ElseIf arr(i).StartsWith("[X_AREA_TYPE_QTY#]=") Then
+                '        X_AREA_TYPE_QTY = getValueInt(arr(i))
+                '    End If
+                'Next
+            End Sub
+        End Class
+        Public Class OPT_RESULT_X_AREA
+            Public X_AREA As Integer
+            Public WIDTH As Double
+            Public HEIGHT As Double
+            Public Y_AREA_QTY As Integer
+            Public Y_AREA_TYPE_QTY As Integer
+            Public Y_AREA_REF As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
+            'Public Y_AREA_CLASS As List(Of OPT_RESULT_Y_AREA)
 
 
-        Sub New(ByVal _str As String)
-            Dim str As String = _str
-            Dim split As New SplitBySubstring()
-            Dim lst As List(Of String)
-            lst = split.GetList(str, "[")
-            For Each itm As String In lst
-                Select Case split.getTag(itm)
-                    Case "X_AREA"
-                        X_AREA = getValueInt(itm)
-                    Case "WIDTH"
-                        WIDTH = getValueDouble(itm)
-                    Case "HEIGHT"
-                        HEIGHT = getValueDouble(itm)
-                    Case "Y_AREA_QTY"
-                        Y_AREA_QTY = getValueInt(itm)
-                    Case "Y_AREA_TYPE_QTY"
-                        Y_AREA_TYPE_QTY = getValueInt(itm)
+            Sub New(ByVal _str As String)
+                Dim str As String = _str
+                Dim split As New SplitBySubstring()
+                Dim lst As List(Of String)
+                lst = split.GetList(str, "[")
+                For Each itm As String In lst
+                    Select Case split.getTag(itm)
+                        Case "X_AREA"
+                            X_AREA = getValueInt(itm)
+                        Case "WIDTH"
+                            WIDTH = getValueDouble(itm)
+                        Case "HEIGHT"
+                            HEIGHT = getValueDouble(itm)
+                        Case "Y_AREA_QTY"
+                            Y_AREA_QTY = getValueInt(itm)
+                        Case "Y_AREA_TYPE_QTY"
+                            Y_AREA_TYPE_QTY = getValueInt(itm)
                     Case "Y_AREA_REF"
-                    Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(itm)
+                        Dim yAreaRef As Integer 'Номер Y_AREA_REF
+                        yAreaRef = getValueInt(itm)
+                        Dim yAreaString As String
+                        yAreaString = optiodat.getYAreaRef(yAreaRef)
+                        Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(yAreaString))
+                        'Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(itm)
                 End Select
-            Next
-        End Sub
-        Public Sub draw()
-        End Sub
+                Next
+            End Sub
+            Public Sub draw()
+            End Sub
 
 
-    End Class
+        End Class
     Public Class OPT_RESULT_Y_AREA
         Public Y_AREA As Integer
         Public WIDTH As Double
         Public HEIGHT As Double
         Public U_V_W_Z_AREA_TYPE As Integer
         Public U_V_W_Z_AREA_TYPE_QTY As Integer
+        Public U_V_W_Z_ITEMS As List(Of OPT_RESULT_U_V_W_Z_AREA)
         Public Z_AREA_TYPE_QTY As Integer
         Public Z_AREA_ITEM_REF As Integer
         Public Z_AREA_WIDTH As Integer
         Public Z_AREA_HEIGHT As Integer
-        Public ITEMS As System.Collections.Generic.List(Of OPT_RESULT_U_V_W_Z_AREA)
-
+        'Public ITEMS As System.Collections.Generic.List(Of OPT_RESULT_U_V_W_Z_AREA)
 
         Sub New(ByVal _str As String)
             Dim str As String = _str
             Dim split As New SplitBySubstring()
             Dim lst As List(Of String)
+            Dim lst2 As List(Of String)
             lst = split.GetList(str, "[")
+            lst2 = split.GetList(str, "[U_V_W_Z_AREA_ITEM_REF#]")
             For Each itm As String In lst
                 Select Case split.getTag(itm)
                     Case "Y_AREA"
@@ -321,9 +328,17 @@ Public Class GLASS_FOLDER
                         U_V_W_Z_AREA_TYPE = getValueInt(itm)
                     Case "U_V_W_Z_AREA_TYPE_QTY"
                         U_V_W_Z_AREA_TYPE_QTY = getValueInt(itm)
-                        'Case "Y_AREA_REF"
-                        '    Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(itm)
+                    Case "U_V_W_Z_AREA_TYPE_ITEM_REF"
+                        Dim u_v_w_z_item_id As Integer 'Номер Y_AREA_REF
+                        u_v_w_z_item_id = getValueInt(itm)
+                        Dim yAreaString As String
+                        yAreaString = optiodat.getYAreaRef(yAreaRef)
+                        '   Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(yAreaString))
+                        ' Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(itm)
                 End Select
+                For Each itm2 As String In lst2
+                    
+                Next
             Next
         End Sub
 
@@ -382,50 +397,40 @@ Public Class GLASS_FOLDER
         Public U_V_W_Z_AREA_WIDTH As Double
 
     End Class
-
     Public optio As optioDat_structure
-    Private path As String
-    Private file As String
-    Private nameGlass As String
-    Private optiodat As ReadOptioDat
-    Public header As HEADER
-    Public opt_parameter As OPT_PARAMETER
-    Public opt_result_header As OPT_RESULT_HEADER
-    Public GlassArray As New List(Of GLASS)
-    Public opt_result_stock_sheet_array As New List(Of OPT_RESULT_STOCK_SHEET)
+        Private path As String
+        Private file As String
+        Private nameGlass As String
+    Shared optiodat As ReadOptioDat
+        Public obj_header As HEADER
+        Public obj_opt_parameter As OPT_PARAMETER
+        Public obj_opt_result_header As OPT_RESULT_HEADER
+        Public obj_GlassArray As New List(Of GLASS)
+        Public obj_opt_result_stock_sheet_array As New List(Of OPT_RESULT_STOCK_SHEET)
 
-    Sub New(ByVal _file As String)
+        Sub New(ByVal _file As String)
         file = _file
         optiodat = New ReadOptioDat(file)
-        With optio
-            .header = optiodat.header
-            .glass_array = optio.glass_array
-            .item_array = optiodat.item_array
-            .opt_parameter = optiodat.opt_parameter
-            .opt_result_header = optiodat.opt_result_header
-            .stock_sheet_array = optiodat.stock_sheet_array
-            .x_area_array = optiodat.x_area_array
-            .y_area_array = optiodat.y_area_array
-        End With
-        HEADER = New HEADER(optiodat.header)
-        opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
-        opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
-        For Each item In optiodat.glass_array
-            GlassArray.Add(New GLASS(item))
-        Next
-        For Each item In optiodat.stock_sheet_array
-            opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(item))
-        Next
+        'With optio
+        '    .header = optiodat.header
+        '    .glass_array = optio.glass_array
+        '    .item_array = optiodat.item_array
+        '    .opt_parameter = optiodat.opt_parameter
+        '    .opt_result_header = optiodat.opt_result_header
+        '    .stock_sheet_array = optiodat.stock_sheet_array
+        '    .x_area_array = optiodat.x_area_array
+        '    .y_area_array = optiodat.y_area_array
+        'End With
+            obj_header = New HEADER(optiodat.header)
+            obj_opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
+            obj_opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
+            For Each item In optiodat.glass_array
+                obj_GlassArray.Add(New GLASS(item))
+            Next
+            For Each item In optiodat.stock_sheet_array
+                obj_opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(item))
+            Next
+        End Sub
 
-    End Sub
-    Public Function getXAreaRef(ByVal id As Integer) As String
-        getXAreaRef = optiodat.x_area_array(id)
-    End Function
-    Public Function getYAreaRef(ByVal id As Integer) As String
-        getYAreaRef = optiodat.y_area_array(id)
-    End Function
-    Public Function getItem(ByVal id As Integer) As String
-        getItem = optiodat.item_array(id)
-    End Function
-End Class
+    End Class
 

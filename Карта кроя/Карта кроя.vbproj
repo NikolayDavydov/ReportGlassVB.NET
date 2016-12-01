@@ -157,7 +157,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="ITAP\Class1.vb" />
     <Compile Include="Colors.vb" />
     <Compile Include="Detail.vb" />
     <Compile Include="CodeFile1.vb" />
@@ -167,6 +167,8 @@
     <Compile Include="CustomControl1.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ITAP\Enums.vb" />
+    <Compile Include="execute.vb" />
     <Compile Include="folderClass.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
@@ -203,8 +205,10 @@
     <Compile Include="ReadOptioDat.vb" />
     <Compile Include="Report.vb" />
     <Compile Include="Result.vb" />
+    <Compile Include="ITAP\ResultOpt.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="SplitBySubstring.vb" />
+    <Compile Include="useful.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomControl1.resx">
@@ -225,7 +229,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="111.il" />
     <None Include="app.config" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
@@ -269,7 +272,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ITAP.SquareOPT.dll" />
     <Content Include="MigraDoc.Rendering.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

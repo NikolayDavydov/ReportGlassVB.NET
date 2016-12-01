@@ -16,7 +16,7 @@ Imports MigraDoc.Rendering
 'Imports System.Xml.XPath
 Imports FileHelpers
 Public Class Form1
-    
+    'Public optiodat As ReadOptioDat
     Dim columnName() As String = {"Номер опт.", "Материал", "Площадь листов", "Кол-во листов", _
                                       "Кол-во пластин", "Площадь пластин", "Кол-во остатков", "Кол-во раб. остатков", _
                                       "Площадь остатков", "Процент общий"}
