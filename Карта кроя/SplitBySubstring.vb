@@ -69,11 +69,11 @@
         'str_tmp = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 2)
         If Right(getTag, 1) = "#" Then
             str_tmp = Right(Str, Len(Str) - Str.indexof("]") - 2)
-            getValueInt = Convert.ToInt32(str_tmp)
+            getValueDouble = Convert.ToDouble(str_tmp)
         ElseIf Right(getTag, 2) = "#." Then
             str_tmp = Right(Str, Len(Str) - Str.indexof("]") - 2)
             str_tmp = Left(str_tmp, str_tmp.IndexOf("."))
-            getValueInt = Convert.ToInt32(str_tmp)
+            getValueDouble = Convert.ToDouble(str_tmp)
         End If
     End Function
     Private Function getValueInt(ByVal str) As Integer

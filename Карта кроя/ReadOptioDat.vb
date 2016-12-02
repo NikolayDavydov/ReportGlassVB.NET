@@ -9,6 +9,7 @@
     Public stock_sheet_array As New List(Of String)
     Public x_area_array As New List(Of String)
     Public y_area_array As New List(Of String)
+    Public area_item_ref As New List(Of String)
 
     Sub New(ByVal _file As String)
         file = _file
@@ -39,6 +40,9 @@
                     Dim item_ref As New List(Of String)
                     For Each ref In y_area_array
                         item_ref = split.GetList(ref, "[*U/V/W/Z/_AREA_ITEM_REF#]")
+                        For Each ref2 In item_ref
+                            area_item_ref.Add(ref2)
+                        Next
                     Next
 
             End Select

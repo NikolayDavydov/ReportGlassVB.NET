@@ -331,8 +331,8 @@ Public Class GLASS_FOLDER
                     Case "U_V_W_Z_AREA_TYPE_ITEM_REF"
                         Dim u_v_w_z_item_id As Integer 'Номер Y_AREA_REF
                         u_v_w_z_item_id = getValueInt(itm)
-                        Dim yAreaString As String
-                        yAreaString = optiodat.getYAreaRef(yAreaRef)
+                        'Dim yAreaString As String
+                        'yAreaString = optiodat.getYAreaRef(yAreaRef)
                         '   Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(yAreaString))
                         ' Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(itm)
                 End Select
