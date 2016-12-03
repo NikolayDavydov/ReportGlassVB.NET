@@ -23,7 +23,7 @@ Public Class PORTION
         glassesPath = path + "\1\"
         Dim glasses = From fold2 In Directory.EnumerateDirectories(glassesPath, "*", SearchOption.TopDirectoryOnly)
         For Each glass In glasses
-            files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.fil")
+            files = My.Computer.FileSystem.GetFiles(glass, FileIO.SearchOption.SearchAllSubDirectories, "*.dat")
             file = SelectFile(files, "OPTIO.DAT")
             Me.GlassList.Add(New GLASS_FOLDER(file))
         Next

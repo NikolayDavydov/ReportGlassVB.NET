@@ -1,31 +1,28 @@
 ﻿Public Class SplitBySubstring
-    Public Function GetList(ByVal _str As String, ByVal _separator As String) As List(Of String)
-        Dim str As String
-        Dim separator As String
-        Dim listString As New List(Of String)
-        Dim lenstr As Integer
-        Dim lenseparator As Integer
-        'убираем перевод строки
-        str = _str
-        separator = _separator
-        lenstr = Len(str)
-        lenseparator = Len(separator)
-        str = StringPreprocess(str) 'Убираем переводы строк
-        Dim mid1 As String
-        Dim mid2 As String
-        For i = 1 To lenstr - lenseparator
-            mid1 = Mid(str, i, lenseparator).ToUpper
-            If mid1 = separator.ToUpper Then
-                For j = i + lenseparator To lenstr - lenseparator
-                    mid2 = Mid(str, j, lenseparator).ToUpper
-                    If mid2 = separator.ToUpper Or j = lenstr - lenseparator Then
-                        listString.Add(Mid(str, i, j - i))
-                        Exit For
-                    End If
-                Next
+    Public Function GetList(ByVal str As String, ByVal separator As String) As List(Of String)
+        Dim list As New List(Of String)
+        Dim str1 As String
+        Dim i As Integer
+        Dim index1, index2 As Integer
+        i = 0
+        Do
+            index1 = str.IndexOf(separator, i)
+            If index1 <> -1 Then
+                index2 = str.IndexOf(separator, index1 + 1)
+                If index2 <> -1 Then
+                    i = index2
+                    str1 = Mid(str, index1 + 1, index2 - index1)
+                    list.Add(str1)
+                Else
+                    str1 = Mid(str, index1)
+                    list.Add(str1)
+                    i = i + 1
+                End If
+            Else
+                Return list
             End If
-        Next
-        Return listString
+        Loop While str.IndexOf(separator, i) <> -1
+        Return list
     End Function
     Private Function StringPreprocess(ByVal _str As String) As String
         Replace(_str, "\r", String.Empty)
