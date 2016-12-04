@@ -45,8 +45,6 @@ Module GlobalSub
             getValueStr = Microsoft.VisualBasic.Right(str, Len(str) - str.indexof("]") - 1)
         End If
     End Function
-
-
     Public Function TrfCoordRectangle(ByVal origPoint As System.Drawing.Point, ByVal origSize As System.Drawing.Size, _
                                            ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
         Dim newPoint As System.Drawing.Point
@@ -71,7 +69,6 @@ Module GlobalSub
         ResizeSize.Width = CInt(CDbl(sz.Width) * ratio)
         ResizeSize.Height = CInt(CDbl(sz.Height) * ratio)
     End Function
-
     Public Function GetInt32(ByVal value As Object) As Integer
         Try
             If ((Not value Is DBNull.Value) AndAlso (Not value Is Nothing)) Then
@@ -82,7 +79,6 @@ Module GlobalSub
             Return 0
         End Try
     End Function
-
     Public Function GetDouble(ByVal value As Object) As Double
         Try
             If ((Not value Is DBNull.Value) AndAlso (Not value Is Nothing)) Then
@@ -98,11 +94,8 @@ Module GlobalSub
         source = source.Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
         Return source
     End Function
-
     'Public Function CreatePlate(ByVal filename As String) As System.Drawing.Bitmap
     'bmp_tmp = New Bitmap(filename)
     'Return bmp_tmp
     'End Function
-
-
 End Module

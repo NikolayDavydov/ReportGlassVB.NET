@@ -8,8 +8,31 @@
     Public glass_array As New List(Of String)
     Public stock_sheet_array As New List(Of String)
     Public x_area_array As New List(Of String)
-    Public y_area_array As New List(Of String)
-    Public area_item_ref As New List(Of String)
+    Public y_area_list As New List(Of y_area)
+    Public Class y_area
+        Public y_area As String
+        Public item_ref As New List(Of String)
+
+        Sub New(ByVal _str As String)
+            Dim split As New SplitBySubstring
+            y_area = _str
+            'Dim item_ref As New List(Of String)
+            For Each itm In y_area
+                item_ref = split.GetList(itm, "[*U/V/W/Z_AREA_ITEM_REF#]")
+                'For Each ref2 In item_ref
+                '    area_item_ref.Add(ref2)
+                'Next
+            Next
+        End Sub
+    End Class
+
+    'Public Structure y_area_array_structure
+    '    Public y_area As String
+    '    Public item_ref As List(Of String)
+    'End Structure
+ 
+    'Public y_area_array As New List(Of y_area_array_structure)
+    'Public area_item_ref As New List(Of String)
 
     Sub New(ByVal _file As String)
         file = _file
@@ -33,36 +56,22 @@
                 stock_sheet_array = split.GetList(l, "[STOCK_SHEET#]")
             ElseIf l.Contains("[---OPT_RESULT_X_AREA_ARRAY---]") Then
                 x_area_array = split.GetList(l, "[X_AREA#]")
-                'ElseIf l.Contains("[---OPT_RESULT_Y_AREA_ARRAY---]") Then
-                '    y_area_array = split.GetList(l, "[Y_AREA#]")
-                '    Dim item_ref As New List(Of String)
-                '    For Each ref In y_area_array
-                '        item_ref = split.GetList(ref, "[*U/V/W/Z_AREA_ITEM_REF#]")
-                '        For Each ref2 In item_ref
-                '            area_item_ref.Add(ref2)
-                '        Next
-                '    Next
+            ElseIf l.Contains("[---OPT_RESULT_Y_AREA_ARRAY---]") Then
+                Dim y_area As List(Of String)
+                y_area = split.GetList(l, "[Y_AREA#]")
+                For Each itm In y_area
+                    y_area_list.Add(New y_area(itm))
 
+                Next
+
+                'Dim item_ref As New List(Of String)
+                For Each itm In y_area_array
+                    item_ref = split.GetList(ref, "[*U/V/W/Z_AREA_ITEM_REF#]")
+                    'For Each ref2 In item_ref
+                    '    area_item_ref.Add(ref2)
+                    'Next
+                Next
             End If
-            'Dim tag As String = split.getHeadTag(l)
-            'Select Case tag
-            '    Case "[---HEADER---]"
-
-            '    Case "[---ITEM_ARRAY---]"
-
-            '    Case "[---GLASS_ARRAY---]"
-
-            '    Case "[---OPT_PARAMETER---]"
-
-            '    Case "[---OPT_RESULT_HEADER---]"
-
-            '    Case "[---OPT_RESULT_STOCK_SHEET_ARRAY---]"
-
-            '    Case "[---OPT_RESULT_X_AREA_ARRAY---]"
-
-            '    Case "[---OPT_RESULT_Y_AREA_ARRAY---]"
-
-            'End Select
         Next
     End Sub
 
@@ -113,10 +122,10 @@
         End If
     End Function
     Public Function getXAreaRef(ByVal id As Integer) As String
-        getXAreaRef = x_area_array(id)
+        getXAreaRef = x_area_array(id - 1)
     End Function
     Public Function getYAreaRef(ByVal id As Integer) As String
-        getYAreaRef = y_area_array(id)
+        getYAreaRef = y_area_array(id - 1)
     End Function
     Public Function getItem(ByVal id As Integer) As String
         getItem = item_array(id)
