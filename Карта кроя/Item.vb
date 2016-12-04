@@ -15,26 +15,26 @@
     Private sz As System.Drawing.Size
 
 
-    Sub New(ByVal _rec As Int32, ByVal _box As Int32, ByVal _ORDER As String, _
-        ByVal _ITEM As Int32, ByVal _OPT_GROUP As Int32, ByVal _CODE As String, _
-        ByVal _WIDTH As Int32, ByVal _HEIGHT As Int32, ByVal _UNIT_QTY As Int32, _
-        ByVal _SHEET_QTY As Int32, ByVal _RACK As String, ByVal _SHAPE_FILE As String)
-        REC = _rec
-        BOX = _box
-        ORDER = _ORDER
-        ITEM = _ITEM
-        OPT_GROUP = _OPT_GROUP
-        CODE = _CODE
-        WIDTH = _WIDTH
-        HEIGHT = _HEIGHT
-        UNIT_QTY = _UNIT_QTY
-        SHEET_QTY = _SHEET_QTY
-        SHAPE_FILE = _SHAPE_FILE
-        'Проверка на наличие шейпа
-        If SHAPE_FILE <> "" Then
+    'Sub New(ByVal _rec As Int32, ByVal _box As Int32, ByVal _ORDER As String, _
+    '    ByVal _ITEM As Int32, ByVal _OPT_GROUP As Int32, ByVal _CODE As String, _
+    '    ByVal _WIDTH As Int32, ByVal _HEIGHT As Int32, ByVal _UNIT_QTY As Int32, _
+    '    ByVal _SHEET_QTY As Int32, ByVal _RACK As String, ByVal _SHAPE_FILE As String)
+    '    REC = _rec
+    '    BOX = _box
+    '    ORDER = _ORDER
+    '    ITEM = _ITEM
+    '    OPT_GROUP = _OPT_GROUP
+    '    CODE = _CODE
+    '    WIDTH = _WIDTH
+    '    HEIGHT = _HEIGHT
+    '    UNIT_QTY = _UNIT_QTY
+    '    SHEET_QTY = _SHEET_QTY
+    '    SHAPE_FILE = _SHAPE_FILE
+    '    'Проверка на наличие шейпа
+    '    If SHAPE_FILE <> "" Then
 
-        End If
-    End Sub
+    '    End If
+    'End Sub
 
     Public Sub rotate()
         Dim tmp As Int32
