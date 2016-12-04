@@ -205,7 +205,6 @@
     <Compile Include="PORTION.vb" />
     <Compile Include="ReadOptioDat.vb" />
     <Compile Include="Report.vb" />
-    <Compile Include="Result.vb" />
     <Compile Include="ITAP\ResultOpt.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="SplitBySubstring.vb" />

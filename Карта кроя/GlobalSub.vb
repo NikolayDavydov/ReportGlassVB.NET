@@ -71,6 +71,34 @@ Module GlobalSub
         ResizeSize.Width = CInt(CDbl(sz.Width) * ratio)
         ResizeSize.Height = CInt(CDbl(sz.Height) * ratio)
     End Function
+
+    Public Function GetInt32(ByVal value As Object) As Integer
+        Try
+            If ((Not value Is DBNull.Value) AndAlso (Not value Is Nothing)) Then
+                Return Convert.ToInt32(value)
+            End If
+            Return 0
+        Catch 'obj1 As Object
+            Return 0
+        End Try
+    End Function
+
+    Public Function GetDouble(ByVal value As Object) As Double
+        Try
+            If ((Not value Is DBNull.Value) AndAlso (Not value Is Nothing)) Then
+                Return Convert.ToDouble(DecimalNoramalize(value.ToString))
+            End If
+            Return 0
+        Catch ' obj1 As Object
+            Return 0
+        End Try
+    End Function
+    Public Function DecimalNoramalize(ByVal source As String) As String
+        source = source.Replace(",", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+        source = source.Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+        Return source
+    End Function
+
     'Public Function CreatePlate(ByVal filename As String) As System.Drawing.Bitmap
     'bmp_tmp = New Bitmap(filename)
     'Return bmp_tmp

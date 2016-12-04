@@ -16,7 +16,7 @@
                 Else
                     str1 = Mid(str, index1)
                     list.Add(str1)
-                    i = i + 1
+                    i = index1 + 1
                 End If
             Else
                 Return list
