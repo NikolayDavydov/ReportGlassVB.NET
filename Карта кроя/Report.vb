@@ -18,6 +18,7 @@ Public Class Report
                 Me.portions.Add(New PORTION(folder))
             End If
         Next
-
     End Sub
+
+
 End Class
