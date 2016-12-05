@@ -157,11 +157,10 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.vb" />
+    <Compile Include="ITAP\Class2.vb" />
     <Compile Include="ITAP\Class1.vb" />
     <Compile Include="Colors.vb" />
     <Compile Include="Detail.vb" />
-    <Compile Include="CodeFile1.vb" />
     <Compile Include="CustomControl1.Designer.vb">
       <DependentUpon>CustomControl1.vb</DependentUpon>
     </Compile>
@@ -169,7 +168,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ITAP\Enums.vb" />
-    <Compile Include="execute.vb" />
     <Compile Include="folderClass.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
@@ -207,7 +205,7 @@
     <Compile Include="ITAP\ResultOpt.vb" />
     <Compile Include="Settings.vb" />
     <Compile Include="SplitBySubstring.vb" />
-    <Compile Include="useful.vb" />
+    <Compile Include="ITAP\useful.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomControl1.resx">
@@ -266,9 +264,6 @@
       <ProductName>Установщик Windows 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MigraDoc.Rendering.dll">

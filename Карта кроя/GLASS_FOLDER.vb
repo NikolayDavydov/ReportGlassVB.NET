@@ -1,7 +1,6 @@
 ﻿Imports System.Linq
 Imports System.Collections.ObjectModel
 Imports System.IO
-'Imports Report
 Imports Report.GLASS_FOLDER
 Imports Report.GlobalSub
 Imports Report.Form1
@@ -10,7 +9,6 @@ Public Class GLASS_FOLDER
     Private file As String
     Private nameGlass As String
     Shared optiodat As ReadOptioDat
-    'Public optio As optioDat_structure
     Public obj_header As HEADER
     Public obj_item_array As New List(Of ITEM)
     Public obj_opt_parameter As OPT_PARAMETER
@@ -60,15 +58,6 @@ Public Class GLASS_FOLDER
             OWNER = optiodat.getValue(str, "OWNER")
         End Sub
     End Class
-    'Public Class GLASS_ARRAY
-    '    Private GLASS_LIST As List(Of GLASS) 'Форматы стекол
-    '    Sub New(ByVal _lst As List(Of String))
-    '        Dim lst As List(Of String) = _lst
-    '        For Each l In lst
-    '            GLASS_LIST.Add(New GLASS(l))
-    '        Next
-    '    End Sub
-    'End Class
     Public Class GLASS 'Форматы стекол
         Public REC As Integer 'Номер записи
         Public CODE As String 'Наименование стекла

@@ -58,9 +58,6 @@
     Public Function getXAreaRef(ByVal id As Integer) As String
         getXAreaRef = x_area_array(id - 1)
     End Function
-    'Public Function getYAreaRef(ByVal id As Integer) As String
-    '    'getYAreaRef = y_area_array(id - 1)
-    'End Function
     Public Function getItem(ByVal id As Integer) As String
         getItem = item_array(id)
     End Function
