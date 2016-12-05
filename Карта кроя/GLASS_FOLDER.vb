@@ -194,7 +194,6 @@ Public Class GLASS_FOLDER
             Dim str As String = _str
             Dim split As New SplitBySubstring()
             Dim lst As List(Of String)
-            'lst = split.GetList(str, "[")
             X_AREA = GetInt32(optiodat.getValue(str, "X_AREA"))
             WIDTH = GetDouble(optiodat.getValue(str, "WIDTH"))
             HEIGHT = GetDouble(optiodat.getValue(str, "HEIGHT"))
