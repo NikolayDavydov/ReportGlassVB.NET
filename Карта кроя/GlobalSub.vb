@@ -79,6 +79,16 @@ Module GlobalSub
             Return 0
         End Try
     End Function
+    Public Function GetInt32(ByVal str As String) As Integer
+        Try
+            If Not str Is String.Empty Then
+                Return Convert.ToInt32(str)
+            End If
+            Return 0
+        Catch 'obj1 As Object
+            Return 0
+        End Try
+    End Function
     Public Function GetDouble(ByVal value As Object) As Double
         Try
             If ((Not value Is DBNull.Value) AndAlso (Not value Is Nothing)) Then

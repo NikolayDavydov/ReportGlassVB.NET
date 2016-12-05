@@ -60,15 +60,15 @@ Public Class GLASS_FOLDER
             OWNER = optiodat.getValue(str, "OWNER")
         End Sub
     End Class
-    Public Class GLASS_ARRAY
-        Private GLASS_LIST As List(Of GLASS) 'Форматы стекол
-        Sub New(ByVal _lst As List(Of String))
-            Dim lst As List(Of String) = _lst
-            For Each l In lst
-                GLASS_LIST.Add(New GLASS(l))
-            Next
-        End Sub
-    End Class
+    'Public Class GLASS_ARRAY
+    '    Private GLASS_LIST As List(Of GLASS) 'Форматы стекол
+    '    Sub New(ByVal _lst As List(Of String))
+    '        Dim lst As List(Of String) = _lst
+    '        For Each l In lst
+    '            GLASS_LIST.Add(New GLASS(l))
+    '        Next
+    '    End Sub
+    'End Class
     Public Class GLASS 'Форматы стекол
         Public REC As Integer 'Номер записи
         Public CODE As String 'Наименование стекла
@@ -188,7 +188,7 @@ Public Class GLASS_FOLDER
         Public HEIGHT As Double
         Public Y_AREA_QTY As Integer
         Public Y_AREA_TYPE_QTY As Integer
-        Public Y_AREA_REF As New List(Of OPT_RESULT_Y_AREA)
+        Public Y_AREA_REF As New List(Of Integer)
 
         Sub New(ByVal _str As String)
             Dim str As String = _str
@@ -201,9 +201,7 @@ Public Class GLASS_FOLDER
             Y_AREA_TYPE_QTY = GetInt32(optiodat.getValue(str, "Y_AREA_TYPE_QTY"))
             lst = optiodat.getValues(str, "*Y_AREA_REF")
             For Each itm As String In lst
-                Dim yAreaString As String
-                'yAreaString = optiodat.getYAreaRef(Convert.ToInt32(itm))
-                Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(yAreaString))
+                Y_AREA_REF.Add(GetInt32(itm))
             Next
         End Sub
         Public Sub draw()
@@ -222,7 +220,6 @@ Public Class GLASS_FOLDER
             Dim split As New SplitBySubstring()
             Dim lst As List(Of String)
             lst = split.GetList(str, "[U_V_W_Z_AREA_ITEM_REF#]")
-
             Y_AREA = GetInt32(optiodat.getValue(str, "Y_AREA"))
             WIDTH = GetDouble(optiodat.getValue(str, "WIDTH"))
             HEIGHT = GetDouble(optiodat.getValue(str, "HEIGHT"))
@@ -231,7 +228,6 @@ Public Class GLASS_FOLDER
                 U_V_W_Z_ITEMS.Add(New OPT_RESULT_U_V_W_Z_AREA(itm))
             Next
         End Sub
-
         'Public Function draw(ByVal graph As System.Drawing.Graphics, ByVal pt As System.Drawing.Point, _
         '                      ByVal ratio As Single) As System.Drawing.Graphics
         '    Dim col As New Colors
@@ -260,7 +256,6 @@ Public Class GLASS_FOLDER
         '    ' graph.DrawString(RACK, drawFont, drawBrush, drawPoint, drawFormat)
         '    Return graph
         'End Function
-
     End Class
     Public Class OPT_RESULT_U_V_W_Z_AREA
         Public U_V_W_Z_AREA_HEIGHT As Double
