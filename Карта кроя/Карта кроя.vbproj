@@ -186,7 +186,6 @@
     </Compile>
     <Compile Include="GLASS_FOLDER.vb" />
     <Compile Include="GlobalSub.vb" />
-    <Compile Include="ITEM.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

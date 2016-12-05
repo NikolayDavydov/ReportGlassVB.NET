@@ -1,21 +1,55 @@
 ﻿Imports System.Linq
 Imports System.Collections.ObjectModel
 Imports System.IO
-Imports Report
+'Imports Report
 Imports Report.GLASS_FOLDER
 Imports Report.GlobalSub
 Imports Report.Form1
 Public Class GLASS_FOLDER
-    Public Structure optioDat_structure
-        Public header As String
-        Public opt_parameter As String
-        Public opt_result_header As String
-        Public item_array As List(Of String)
-        Public glass_array As List(Of String)
-        Public stock_sheet_array As List(Of String)
-        Public x_area_array As List(Of String)
-        Public y_area_array As List(Of String)
-    End Structure
+    Private path As String
+    Private file As String
+    Private nameGlass As String
+    Shared optiodat As ReadOptioDat
+    'Public optio As optioDat_structure
+    Public obj_header As HEADER
+    Public obj_item_array As New List(Of ITEM)
+    Public obj_opt_parameter As OPT_PARAMETER
+    Public obj_opt_result_header As OPT_RESULT_HEADER
+    Public obj_GlassArray As New List(Of GLASS)
+    Public obj_opt_result_stock_sheet_array As New List(Of OPT_RESULT_STOCK_SHEET)
+    Public obj_x_area_array As New List(Of OPT_RESULT_X_AREA)
+    Public obj_y_area_array As New List(Of OPT_RESULT_Y_AREA)
+
+    Sub New(ByVal _file As String)
+        file = _file
+        optiodat = New ReadOptioDat(file)
+        obj_header = New HEADER(optiodat.header)
+        obj_opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
+        obj_opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
+        'items
+        For Each itm In optiodat.item_array
+            obj_item_array.Add(New ITEM(itm))
+        Next
+        'Glass array
+        For Each itm In optiodat.glass_array
+            obj_GlassArray.Add(New GLASS(itm))
+        Next
+        'Stock sheet array
+        For Each itm In optiodat.stock_sheet_array
+            obj_opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(itm))
+        Next
+        'X area array
+        For Each itm In optiodat.x_area_array
+            obj_x_area_array.Add(New OPT_RESULT_X_AREA(itm))
+        Next
+        'Y area array
+        Dim _itm As String
+        For Each itm In optiodat.y_area_list
+            _itm = itm.y_area
+            obj_y_area_array.Add(New OPT_RESULT_Y_AREA(_itm))
+        Next
+    End Sub
+
     Public Class HEADER
         Public OWNER As String
         Public RELEASE As Integer
@@ -155,8 +189,6 @@ Public Class GLASS_FOLDER
         Public Y_AREA_QTY As Integer
         Public Y_AREA_TYPE_QTY As Integer
         Public Y_AREA_REF As New List(Of OPT_RESULT_Y_AREA)
-        'Public Y_AREA_CLASS As List(Of OPT_RESULT_Y_AREA)
-
 
         Sub New(ByVal _str As String)
             Dim str As String = _str
@@ -171,14 +203,12 @@ Public Class GLASS_FOLDER
             lst = optiodat.getValues(str, "*Y_AREA_REF")
             For Each itm As String In lst
                 Dim yAreaString As String
-                yAreaString = optiodat.getYAreaRef(Convert.ToInt32(itm))
+                'yAreaString = optiodat.getYAreaRef(Convert.ToInt32(itm))
                 Y_AREA_REF.Add(New OPT_RESULT_Y_AREA(yAreaString))
             Next
         End Sub
         Public Sub draw()
         End Sub
-
-
     End Class
     Public Class OPT_RESULT_Y_AREA
         Public Y_AREA As Integer
@@ -188,25 +218,17 @@ Public Class GLASS_FOLDER
         Public U_V_W_Z_AREA_TYPE_QTY As Integer
         Public U_V_W_Z_ITEMS As List(Of OPT_RESULT_U_V_W_Z_AREA)
 
-        'Public Z_AREA_TYPE_QTY As Integer
-        'Public Z_AREA_ITEM_REF As Integer
-        'Public Z_AREA_WIDTH As Integer
-        'Public Z_AREA_HEIGHT As Integer
-        'Public ITEMS As System.Collections.Generic.List(Of OPT_RESULT_U_V_W_Z_AREA)
-
         Sub New(ByVal _str As String)
             Dim str As String = _str
             Dim split As New SplitBySubstring()
             Dim lst As List(Of String)
-            Dim lst2 As List(Of String)
-            lst = split.GetList(str, "[")
-            lst2 = split.GetList(str, "[U_V_W_Z_AREA_ITEM_REF#]")
+            lst = split.GetList(str, "[U_V_W_Z_AREA_ITEM_REF#]")
 
             Y_AREA = GetInt32(optiodat.getValue(str, "Y_AREA"))
             WIDTH = GetDouble(optiodat.getValue(str, "WIDTH"))
             HEIGHT = GetDouble(optiodat.getValue(str, "HEIGHT"))
             U_V_W_Z_AREA_TYPE_QTY = GetInt32(optiodat.getValue(str, "U_V_W_Z_AREA_TYPE_QTY"))
-            For Each itm In lst2
+            For Each itm In lst
                 U_V_W_Z_ITEMS.Add(New OPT_RESULT_U_V_W_Z_AREA(itm))
             Next
         End Sub
@@ -243,19 +265,17 @@ Public Class GLASS_FOLDER
     End Class
     Public Class OPT_RESULT_U_V_W_Z_AREA
         Public U_V_W_Z_AREA_HEIGHT As Double
-        Public U_V_W_Z_AREA_ITEM_REF As ITEM
+        Public U_V_W_Z_AREA_ITEM_REF As Integer
         Public U_V_W_Z_AREA_QTY_X As Integer
         Public U_V_W_Z_AREA_QTY_Y As Integer
         Public U_V_W_Z_AREA_WIDTH As Double
 
         Sub New(ByVal _str As String)
             Dim str As String
-            Dim str_item As String
             str = _str
-            U_V_W_Z_AREA_HEIGHT = GetDouble(optiodat.getValue(str, "U_V_W_Z_AREA_HEIGHT"))
-            U_V_W_Z_AREA_WIDTH = GetDouble(optiodat.getValue(str, "U_V_W_Z_AREA_WIDTH"))
-            str_item = optiodat.item_array(GetInt32(optiodat.getValue(str, "U_V_W_Z_AREA_ITEM_REF")))
-            U_V_W_Z_AREA_ITEM_REF = New ITEM(str_item)
+            U_V_W_Z_AREA_HEIGHT = GetDouble(optiodat.getValue(str, "*U_V_W_Z_AREA_HEIGHT"))
+            U_V_W_Z_AREA_WIDTH = GetDouble(optiodat.getValue(str, "*U_V_W_Z_AREA_WIDTH"))
+            U_V_W_Z_AREA_ITEM_REF = GetInt32(optiodat.getValue(str, "*U_V_W_Z_AREA_ITEM_REF"))
         End Sub
 
     End Class
@@ -322,28 +342,5 @@ Public Class GLASS_FOLDER
             Return graph
         End Function
     End Class
-    Private path As String
-    Private file As String
-    Private nameGlass As String
-    Shared optiodat As ReadOptioDat
-    Public optio As optioDat_structure
-    Public obj_header As HEADER
-    Public obj_opt_parameter As OPT_PARAMETER
-    Public obj_opt_result_header As OPT_RESULT_HEADER
-    Public obj_GlassArray As New List(Of GLASS)
-    Public obj_opt_result_stock_sheet_array As New List(Of OPT_RESULT_STOCK_SHEET)
-    Sub New(ByVal _file As String)
-        file = _file
-        optiodat = New ReadOptioDat(file)
-        obj_header = New HEADER(optiodat.header)
-        obj_opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
-        obj_opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
-        For Each item In optiodat.glass_array
-            obj_GlassArray.Add(New GLASS(item))
-        Next
-        For Each item In optiodat.stock_sheet_array
-            obj_opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(item))
-        Next
-    End Sub
 End Class
 

@@ -9,30 +9,6 @@
     Public stock_sheet_array As New List(Of String)
     Public x_area_array As New List(Of String)
     Public y_area_list As New List(Of y_area)
-    Public Class y_area
-        Public y_area As String
-        Public item_ref As New List(Of String)
-
-        Sub New(ByVal _str As String)
-            Dim split As New SplitBySubstring
-            y_area = _str
-            'Dim item_ref As New List(Of String)
-            For Each itm In y_area
-                item_ref = split.GetList(itm, "[*U/V/W/Z_AREA_ITEM_REF#]")
-                'For Each ref2 In item_ref
-                '    area_item_ref.Add(ref2)
-                'Next
-            Next
-        End Sub
-    End Class
-
-    'Public Structure y_area_array_structure
-    '    Public y_area As String
-    '    Public item_ref As List(Of String)
-    'End Structure
- 
-    'Public y_area_array As New List(Of y_area_array_structure)
-    'Public area_item_ref As New List(Of String)
 
     Sub New(ByVal _file As String)
         file = _file
@@ -57,25 +33,85 @@
             ElseIf l.Contains("[---OPT_RESULT_X_AREA_ARRAY---]") Then
                 x_area_array = split.GetList(l, "[X_AREA#]")
             ElseIf l.Contains("[---OPT_RESULT_Y_AREA_ARRAY---]") Then
-                Dim y_area As List(Of String)
-                y_area = split.GetList(l, "[Y_AREA#]")
-                For Each itm In y_area
+                Dim y As List(Of String)
+                y = split.GetList(l, "[Y_AREA#]")
+                For Each itm In y
                     y_area_list.Add(New y_area(itm))
-
-                Next
-
-                'Dim item_ref As New List(Of String)
-                For Each itm In y_area_array
-                    item_ref = split.GetList(ref, "[*U/V/W/Z_AREA_ITEM_REF#]")
-                    'For Each ref2 In item_ref
-                    '    area_item_ref.Add(ref2)
-                    'Next
                 Next
             End If
         Next
     End Sub
 
-   
+    Public Class y_area
+        Public y_area As String
+        Public item_ref As New List(Of String)
+
+        Sub New(ByVal _str As String)
+            Dim split As New SplitBySubstring
+            y_area = _str
+            item_ref = split.GetList(_str, "[*U/V/W/Z_AREA_ITEM_REF#]")
+        End Sub
+        Public Function getYAreaRef(ByVal index) As String
+            getYAreaRef = item_ref(index)
+        End Function
+    End Class
+    Public Function getXAreaRef(ByVal id As Integer) As String
+        getXAreaRef = x_area_array(id - 1)
+    End Function
+    Public Function getYAreaRef(ByVal id As Integer) As String
+        'getYAreaRef = y_area_array(id - 1)
+    End Function
+    Public Function getItem(ByVal id As Integer) As String
+        getItem = item_array(id)
+    End Function
+    Public Function getValue(ByVal source As String, ByVal field As String) As String
+        Dim strArray As String() = source.Split(New Char() {"["c})
+        Dim str2 As String
+        For Each str2 In strArray
+            If str2.StartsWith(field) Then
+                Dim index As Integer = str2.IndexOf("="c)
+                Dim str3 As String = str2.Substring((index + 1), (str2.Length - (index + 1)))
+                If str2.Contains("#") Then
+                    str3 = str3.Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                End If
+                Return str3
+            End If
+        Next
+        Return String.Empty
+    End Function
+    Public Function getValues(ByVal source As String, ByVal field As String) As List(Of String)
+        Dim strArray As String() = source.Split(New Char() {"["c})
+        Dim str2 As String
+        Dim list As New List(Of String)
+        For Each str2 In strArray
+            If str2.StartsWith(field) Then
+                Dim index As Integer = str2.IndexOf("="c)
+                Dim str3 As String = str2.Substring((index + 1), (str2.Length - (index + 1)))
+                If str2.Contains("#") Then
+                    str3 = str3.Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+
+                End If
+                list.Add(str3)
+                'Return list
+            End If
+        Next
+        Return list
+    End Function
+    Private Function getValue1(ByVal source As String, ByVal field As String) As String
+        If Not source.Contains(field) Then
+            Return String.Empty
+        End If
+        Dim num As Integer = (source.IndexOf(field) + field.Length)
+        Dim str As String = String.Empty
+        Dim i As Integer
+        For i = num To source.Length - 1
+            If (source.Chars(i) = "["c) Then
+                Return str
+            End If
+            str = (str & source.Chars(i))
+        Next i
+        Return str
+    End Function
     Private Function getHeadTag(ByVal str) As String
         getHeadTag = ""
         If Left(str, 3) = "---" Then
@@ -120,65 +156,5 @@
             str_tmp = Left(str_tmp, str_tmp.IndexOf("."))
             getValueInt = Convert.ToInt32(str_tmp)
         End If
-    End Function
-    Public Function getXAreaRef(ByVal id As Integer) As String
-        getXAreaRef = x_area_array(id - 1)
-    End Function
-    Public Function getYAreaRef(ByVal id As Integer) As String
-        getYAreaRef = y_area_array(id - 1)
-    End Function
-    Public Function getItem(ByVal id As Integer) As String
-        getItem = item_array(id)
-    End Function
-    Public Function getValue(ByVal source As String, ByVal field As String) As String
-        Dim strArray As String() = source.Split(New Char() {"["c})
-        Dim str2 As String
-        For Each str2 In strArray
-            If str2.StartsWith(field) Then
-                Dim index As Integer = str2.IndexOf("="c)
-                Dim str3 As String = str2.Substring((index + 1), (str2.Length - (index + 1)))
-                If str2.Contains("#") Then
-                    str3 = str3.Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-                End If
-                Return str3
-            End If
-        Next
-        Return String.Empty
-    End Function
-
-    Public Function getValues(ByVal source As String, ByVal field As String) As List(Of String)
-        Dim strArray As String() = source.Split(New Char() {"["c})
-        Dim str2 As String
-        Dim list As New List(Of String)
-        For Each str2 In strArray
-            If str2.StartsWith(field) Then
-                Dim index As Integer = str2.IndexOf("="c)
-                Dim str3 As String = str2.Substring((index + 1), (str2.Length - (index + 1)))
-                If str2.Contains("#") Then
-                    str3 = str3.Replace(".", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator).Replace(",", Application.CurrentCulture.NumberFormat.NumberDecimalSeparator)
-
-                End If
-                list.Add(str3)
-                'Return list
-            End If
-        Next
-        Return list
-    End Function
-
-
-    Private Function getValue1(ByVal source As String, ByVal field As String) As String
-        If Not source.Contains(field) Then
-            Return String.Empty
-        End If
-        Dim num As Integer = (source.IndexOf(field) + field.Length)
-        Dim str As String = String.Empty
-        Dim i As Integer
-        For i = num To source.Length - 1
-            If (source.Chars(i) = "["c) Then
-                Return str
-            End If
-            str = (str & source.Chars(i))
-        Next i
-        Return str
     End Function
 End Class
