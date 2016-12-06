@@ -903,8 +903,8 @@ Public Class Form1
         If selectedFolder.Length > 0 Then
             Dim rpt As New Report(FolderPath + "\" + selectedFolder)
             FindFiles(selectedFolder)
-            CreateReport()
-            CreateDocument()
+            'CreateReport()
+            'CreateDocument()
             Form2.ShowDialog()
             Report.Enabled = False
         End If

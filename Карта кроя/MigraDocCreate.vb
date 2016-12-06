@@ -1,16 +1,29 @@
-﻿Imports MigraDoc.DocumentObjectModel
+﻿Imports PdfSharp
+Imports PdfSharp.Pdf
+Imports PdfSharp.Drawing
+Imports PdfSharp.Fonts
+Imports PdfSharp.Forms
+Imports MigraDoc
+Imports MigraDoc.DocumentObjectModel
 Imports MigraDoc.Rendering
-Imports PdfSharp
 Imports Report.Report
 Imports Report.Form1
 Imports Report.GLASS_FOLDER
 
 Public Class MigraDocCreate
     Public doc = New Document()
+    Public folder As String
+
     Private columnName() As String = {"Номер опт.", "Материал", "Площадь листов", "Кол-во листов", _
                                       "Кол-во пластин", "Площадь пластин", "Кол-во остатков", "Кол-во раб. остатков", _
                                       "Площадь остатков", "Процент общий"}
 
+
+    Sub New()
+        folder = Form1.selectedFolder
+        'Form2.Preview.
+        Form2.Preview.Ddl = DdlWriter.WriteToString(CreateDocument())
+    End Sub
     Public Function CreateDocument() As Document
         ' Create a new MigraDoc document
         doc.Info.Title = "Glass Cutting Report"
@@ -19,7 +32,7 @@ Public Class MigraDocCreate
         DefineStyles()
         doc = CreateFirstPage(doc)
         doc = CreateSecondPages(doc)
-        Return Me.doc
+        Return doc
     End Function
     Public Sub DefineStyles()
         ' Get the predefined style Normal.
@@ -73,7 +86,7 @@ Public Class MigraDocCreate
         paragraph.Format.Alignment = ParagraphAlignment.Center
         'paragraph.Format.SpaceBefore = "8cm"
         paragraph.Style = "Reference"
-        paragraph.AddFormattedText("Раскрой стекла " & Form1.selectedFolder, TextFormat.Bold)
+        paragraph.AddFormattedText("Раскрой стекла " & folder, TextFormat.Bold)
         Dim table As Table = section.AddTable()
         table.Style = "Table"
         table.Borders.Color = MigraDoc.DocumentObjectModel.Colors.Black
@@ -143,48 +156,45 @@ Public Class MigraDocCreate
         Return doc
     End Function
     Public Function CreateSecondPages(ByVal _doc As Document) As Document
+        Dim section As Section = doc.AddSection()
+        Dim paragraph As Paragraph = section.AddParagraph()
+        Dim i_tmp As Integer = portions.Count
+        For i = 1 To i_tmp
+            Dim portion = portions(i)
+            Dim j_tmp As Integer = portion.GlassList.Count
+            For j = 1 To j_tmp
+                Dim glassfolder = portion.GlassList(j)
+                Dim k_tmp As Integer = glassfolder.obj_opt_result_stock_sheet_array.Count
+                For k = 0 To k_tmp
+                    section = doc.AddSection()
+                    paragraph = section.AddParagraph()
+                    paragraph.Format.Alignment = ParagraphAlignment.Justify
+                    'paragraph.Format.Font = MigraDoc.DocumentObjectModel.Font
+                    paragraph.Format.Font.Size = 26
+                    paragraph.AddFormattedText("Портфель № " & folder, "Header")
+                    paragraph.AddFormattedText(vbTab & "Порция " & i + 1, "Header")
+                    paragraph.AddFormattedText(vbTab & "Стекло " & glassfolder.GetGlassName, "Header")
+                    paragraph.AddFormattedText(vbTab & "Лист " & k + 1, "Header")
+                    'Dim imgpath As String
+                    'imgpath = FolderPath + "\" + selectedFolder + "\web\img"
+                    'paragraph = section.AddParagraph()
+                    'Dim imgName As String
+                    'imgName = imgpath + "\" + CStr(i) + "-" + CStr(j) + "-" + CStr(k) + ".png"
 
-        Dim portion_tmp As Integer = UBound(PORTION, 1)
-        For i = 0 To portion_tmp
-            With PORTION(i)
-                Dim glass_tmp As Integer = UBound(.glass, 1)
-                For j = 0 To glass_tmp
-                    With .glass(j)
-                        Dim plate_tmp As Integer = UBound(.plate, 1)
-                        For k = 0 To plate_tmp
-                            Section = doc.AddSection()
-                            Paragraph = Section.AddParagraph()
-                            Paragraph.Format.Alignment = ParagraphAlignment.Justify
-                            'paragraph.Format.Font = MigraDoc.DocumentObjectModel.Font
-                            Paragraph.Format.Font.Size = 26
-                            Paragraph.AddFormattedText("Портфель № " & selectedFolder, "Header")
-                            Paragraph.AddFormattedText(vbTab & "Порция " & i + 1, "Header")
-                            Paragraph.AddFormattedText(vbTab & "Стекло " & PORTION(i).glass(j).glassName, "Header")
-                            Paragraph.AddFormattedText(vbTab & "Лист " & k + 1, "Header")
-                            Dim imgpath As String
-                            imgpath = FolderPath + "\" + selectedFolder + "\web\img"
-                            Paragraph = Section.AddParagraph()
-                            Dim imgName As String
-                            imgName = imgpath + "\" + CStr(i) + "-" + CStr(j) + "-" + CStr(k) + ".png"
-
-                            'Dim image2 As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
-                            Dim image As MigraDoc.DocumentObjectModel.Shapes.Image = Paragraph.AddImage(imgName)
-                            image.Width = "29cm"
-                            'image.Height = "13.4cm"
-                            image.LockAspectRatio = True
-                            image.RelativeVertical = RelativeVertical.Line
-                            image.RelativeHorizontal = RelativeHorizontal.Margin
-                            image.Top = ShapePosition.Top
-                            image.Left = ShapePosition.Left
-                            image.WrapFormat.Style = WrapStyle.TopBottom
-                        Next k
-                    End With
-                Next j
-            End With
+                    'Dim image2 As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
+                    Dim image As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
+                    image.Width = "29cm"
+                    'image.Height = "13.4cm"
+                    image.LockAspectRatio = True
+                    image.RelativeVertical = RelativeVertical.Line
+                    image.RelativeHorizontal = RelativeHorizontal.Margin
+                    image.Top = ShapePosition.Top
+                    image.Left = ShapePosition.Left
+                    image.WrapFormat.Style = WrapStyle.TopBottom
+                Next k
+            Next j
         Next i
         Return doc
 
-        'Form2.Preview.
-        Form2.Preview.Ddl = DdlWriter.WriteToString(doc)
     End Function
 End Class

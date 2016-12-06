@@ -2,7 +2,7 @@
 Imports System.IO
 Imports System.Collections.ObjectModel
 Public Class Report
-    Public path As String
+    Public Shared path As String
     Public Shared portions As List(Of PORTION)
 
     Sub New(ByVal _path As String)
