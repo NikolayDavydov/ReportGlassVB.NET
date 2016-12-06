@@ -7,7 +7,9 @@ Imports Report.GLASS_FOLDER
 
 Public Class MigraDocCreate
     Public doc = New Document()
-
+    Private columnName() As String = {"Номер опт.", "Материал", "Площадь листов", "Кол-во листов", _
+                                      "Кол-во пластин", "Площадь пластин", "Кол-во остатков", "Кол-во раб. остатков", _
+                                      "Площадь остатков", "Процент общий"}
 
     Public Function CreateDocument() As Document
         ' Create a new MigraDoc document
@@ -15,7 +17,8 @@ Public Class MigraDocCreate
         doc.Info.Subject = "Report of glass cutting"
         doc.Info.Author = "Nikolay Davydov"
         DefineStyles()
-        CreatePage()
+        doc = CreateFirstPage(doc)
+        doc = CreateSecondPages(doc)
         Return Me.doc
     End Function
     Public Sub DefineStyles()
@@ -52,6 +55,7 @@ Public Class MigraDocCreate
         style.ParagraphFormat.TabStops.AddTabStop("16cm", MigraDoc.DocumentObjectModel.TabAlignment.Right)
     End Sub
     Private Function CreateFirstPage(ByVal _doc As Document) As Document
+        'Подготовительные процедуры
         Dim doc As Document
         doc = _doc
         ' Each MigraDoc document needs at least one section.
@@ -98,42 +102,48 @@ Public Class MigraDocCreate
             row.Cells(i).Format.Alignment = MigraDoc.DocumentObjectModel.ParagraphAlignment.Center
             row.Cells(i).VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Bottom
         Next
-        Dim i_tmp As Integer = UBound(PORTION, 1)
-        Dim sPlate As Single = 0
-        Dim widthPlate, heightPlate As Integer
-        For i = 0 To i_tmp 'обходим порции
-            'row = table.AddRow()
-            With PORTION(i)
-                Dim j_tmp As Integer = UBound(.glass, 1)
-                For j = 0 To j_tmp  'обходим стекло
-                    row = table.AddRow()
-                    If j = 0 Then
-                        row.Cells(0).MergeDown = j_tmp
-                        row.Cells(0).Format.Alignment = ParagraphAlignment.Left
-                        row.Cells(0).VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center
-                        row.Cells(0).AddParagraph(i + 1) 'Номер порции
-                    End If
-                    With .glass(j)
-                        row.Cells(1).AddParagraph(.glassName) 'Материал
-                        Dim n_tmp As Integer = UBound(.plate, 1)
-                        sPlate = 0
-                        For n = 0 To n_tmp
-                            widthPlate = .plate(n).format.Width + .borders.right + IIf(.plate(n).widthOst = 0, .borders.left, (-1) * .plate(n).widthOst)
-                            heightPlate = .plate(n).format.Height + .borders.top + .borders.bottom
-                            sPlate = sPlate + widthPlate * heightPlate / 1000000
-                        Next n
-                        row.Cells(2).AddParagraph(Format(sPlate, "f")) 'Площадь листов
-                        row.Cells(3).AddParagraph(.quPlate) 'Количество листов
-                        row.Cells(4).AddParagraph(.quDetails) 'Количество деталей
-                        row.Cells(5).AddParagraph(Format(.squareDetail, "f")) 'Площадь деталей
-                        row.Cells(6).AddParagraph("0") 'Пока ставим ноль, возможно в дальнейшем доработаю
-                        row.Cells(7).AddParagraph("") 'Количество остатков
-                        row.Cells(8).AddParagraph("") 'Площадь остатков
-                        row.Cells(9).AddParagraph(Format(((sPlate / .squareDetail) - 1), "p")) 'Процент отхода
-                    End With
-                Next
-            End With
+
+
+        'Формирование первого листа
+        Dim i_tmp As Integer = portions.Count
+        For i = 1 To i_tmp
+            Dim portion = portions(i)
+            Dim j_tmp As Integer = portion.GlassList.Count
+            For j = 1 To j_tmp
+                Dim glassfolder = portion.GlassList(j)
+                row = table.AddRow()
+                If j = 0 Then
+                    row.Cells(0).MergeDown = j_tmp
+                    row.Cells(0).Format.Alignment = ParagraphAlignment.Left
+                    row.Cells(0).VerticalAlignment = MigraDoc.DocumentObjectModel.Tables.VerticalAlignment.Center
+                    row.Cells(0).AddParagraph(i + 1) 'Номер порции
+                End If
+                row.Cells(1).AddParagraph(glassfolder.GetGlassName) 'Материал
+                Dim n_tmp As Integer = glassfolder.obj_opt_result_stock_sheet_array.Count
+                'sPlate = 0
+                'For n = 0 To n_tmp
+                '    widthPlate = .plate(n).format.Width + .borders.right + IIf(.plate(n).widthOst = 0, .borders.left, (-1) * .plate(n).widthOst)
+                '    heightPlate = .plate(n).format.Height + .borders.top + .borders.bottom
+                '    sPlate = sPlate + widthPlate * heightPlate / 1000000
+                'Next n
+                Dim SGross As Double = glassfolder.obj_opt_result_header.OPT_AREA_GROSS
+                Dim sNet As Double = glassfolder.obj_opt_result_header.OPT_AREA_NET
+                Dim qDetail As Integer
+                qDetail = glassfolder.obj_item_array.Count
+                row.Cells(2).AddParagraph(Format(SGross, "f")) 'Площадь листов
+                row.Cells(3).AddParagraph(glassfolder.obj_opt_result_header.STOCK_SHEET_QTY) 'Количество листов
+                row.Cells(4).AddParagraph(qDetail) 'Количество деталей
+                row.Cells(5).AddParagraph(Format(sNet, "f")) 'Площадь деталей
+                row.Cells(6).AddParagraph("0") 'Пока ставим ноль, возможно в дальнейшем доработаю
+                row.Cells(7).AddParagraph("") 'Количество остатков
+                row.Cells(8).AddParagraph("") 'Площадь остатков
+                row.Cells(9).AddParagraph(Format(((SGross / sNet) - 1), "p")) 'Процент отхода
+            Next
         Next
+        Return doc
+    End Function
+    Public Function CreateSecondPages(ByVal _doc As Document) As Document
+
         Dim portion_tmp As Integer = UBound(PORTION, 1)
         For i = 0 To portion_tmp
             With PORTION(i)
@@ -142,23 +152,23 @@ Public Class MigraDocCreate
                     With .glass(j)
                         Dim plate_tmp As Integer = UBound(.plate, 1)
                         For k = 0 To plate_tmp
-                            section = doc.AddSection()
-                            paragraph = section.AddParagraph()
-                            paragraph.Format.Alignment = ParagraphAlignment.Justify
+                            Section = doc.AddSection()
+                            Paragraph = Section.AddParagraph()
+                            Paragraph.Format.Alignment = ParagraphAlignment.Justify
                             'paragraph.Format.Font = MigraDoc.DocumentObjectModel.Font
-                            paragraph.Format.Font.Size = 26
-                            paragraph.AddFormattedText("Портфель № " & selectedFolder, "Header")
-                            paragraph.AddFormattedText(vbTab & "Порция " & i + 1, "Header")
-                            paragraph.AddFormattedText(vbTab & "Стекло " & PORTION(i).glass(j).glassName, "Header")
-                            paragraph.AddFormattedText(vbTab & "Лист " & k + 1, "Header")
+                            Paragraph.Format.Font.Size = 26
+                            Paragraph.AddFormattedText("Портфель № " & selectedFolder, "Header")
+                            Paragraph.AddFormattedText(vbTab & "Порция " & i + 1, "Header")
+                            Paragraph.AddFormattedText(vbTab & "Стекло " & PORTION(i).glass(j).glassName, "Header")
+                            Paragraph.AddFormattedText(vbTab & "Лист " & k + 1, "Header")
                             Dim imgpath As String
                             imgpath = FolderPath + "\" + selectedFolder + "\web\img"
-                            paragraph = section.AddParagraph()
+                            Paragraph = Section.AddParagraph()
                             Dim imgName As String
                             imgName = imgpath + "\" + CStr(i) + "-" + CStr(j) + "-" + CStr(k) + ".png"
 
                             'Dim image2 As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
-                            Dim image As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
+                            Dim image As MigraDoc.DocumentObjectModel.Shapes.Image = Paragraph.AddImage(imgName)
                             image.Width = "29cm"
                             'image.Height = "13.4cm"
                             image.LockAspectRatio = True
@@ -172,7 +182,7 @@ Public Class MigraDocCreate
                 Next j
             End With
         Next i
-
+        Return doc
 
         'Form2.Preview.
         Form2.Preview.Ddl = DdlWriter.WriteToString(doc)

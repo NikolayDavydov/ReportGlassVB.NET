@@ -8,14 +8,14 @@ Public Class PORTION
     Private path As String
     Private files As ReadOnlyCollection(Of String)
     Private file As String
-    Public ItemList As System.Collections.Generic.List(Of ITEM)
-    Public Header As HEADER
-    Public OptParametr As OPT_PARAMETER
-    Public OptResultHeader As OPT_RESULT_HEADER
+    'Public ItemList As System.Collections.Generic.List(Of ITEM)
+    'Public Header As HEADER
+    'Public OptParametr As OPT_PARAMETER
+    'Public OptResultHeader As OPT_RESULT_HEADER
 
-    Public OptResultStoockSheetList As System.Collections.Generic.List(Of OPT_RESULT_STOCK_SHEET)
-    Public OptResultXAreaList As System.Collections.Generic.List(Of OPT_RESULT_X_AREA)
-    Public OptResultYAreaList As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
+    'Public OptResultStoockSheetList As System.Collections.Generic.List(Of OPT_RESULT_STOCK_SHEET)
+    'Public OptResultXAreaList As System.Collections.Generic.List(Of OPT_RESULT_X_AREA)
+    'Public OptResultYAreaList As System.Collections.Generic.List(Of OPT_RESULT_Y_AREA)
 
     Sub New(ByVal _path As String)
         path = _path

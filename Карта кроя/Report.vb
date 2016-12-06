@@ -3,7 +3,7 @@ Imports System.IO
 Imports System.Collections.ObjectModel
 Public Class Report
     Public path As String
-    Public portions As List(Of PORTION)
+    Public Shared portions As List(Of PORTION)
 
     Sub New(ByVal _path As String)
         path = _path
@@ -15,7 +15,7 @@ Public Class Report
             Dim number As Integer
             Dim result As Boolean = Int32.TryParse(My.Computer.FileSystem.GetName(folder), number)
             If result Then
-                Me.portions.Add(New PORTION(folder))
+                Report.portions.Add(New PORTION(folder))
             End If
         Next
     End Sub

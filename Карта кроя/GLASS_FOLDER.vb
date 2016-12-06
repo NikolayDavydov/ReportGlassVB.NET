@@ -18,36 +18,6 @@ Public Class GLASS_FOLDER
     Public obj_x_area_array As New List(Of OPT_RESULT_X_AREA)
     Public obj_y_area_array As New List(Of OPT_RESULT_Y_AREA)
 
-    Sub New(ByVal _file As String)
-        file = _file
-        optiodat = New ReadOptioDat(file)
-        obj_header = New HEADER(optiodat.header)
-        obj_opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
-        obj_opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
-        'items
-        For Each itm In optiodat.item_array
-            obj_item_array.Add(New ITEM(itm))
-        Next
-        'Glass array
-        For Each itm In optiodat.glass_array
-            obj_GlassArray.Add(New GLASS(itm))
-        Next
-        'Stock sheet array
-        For Each itm In optiodat.stock_sheet_array
-            obj_opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(itm))
-        Next
-        'X area array
-        For Each itm In optiodat.x_area_array
-            obj_x_area_array.Add(New OPT_RESULT_X_AREA(itm))
-        Next
-        'Y area array
-        Dim _itm As String
-        For Each itm In optiodat.y_area_list
-            _itm = itm.y_area
-            obj_y_area_array.Add(New OPT_RESULT_Y_AREA(_itm))
-        Next
-    End Sub
-
     Public Class HEADER
         Public OWNER As String
         Public RELEASE As Integer
@@ -144,6 +114,7 @@ Public Class GLASS_FOLDER
         Public USED_OPT_PARA As String
         Public USED_STRATEGY As Integer
         Public X_AREA_TYPE_QTY As Integer
+
         Sub New(ByVal _str As String)
             str = _str
             'For i = 0 To UBound(arr, 1)
@@ -325,5 +296,39 @@ Public Class GLASS_FOLDER
             Return graph
         End Function
     End Class
+
+    Sub New(ByVal _file As String)
+        file = _file
+        optiodat = New ReadOptioDat(file)
+        obj_header = New HEADER(optiodat.header)
+        obj_opt_parameter = New OPT_PARAMETER(optiodat.opt_parameter)
+        obj_opt_result_header = New OPT_RESULT_HEADER(optiodat.opt_result_header)
+        'items
+        For Each itm In optiodat.item_array
+            obj_item_array.Add(New ITEM(itm))
+        Next
+        'Glass array
+        For Each itm In optiodat.glass_array
+            obj_GlassArray.Add(New GLASS(itm))
+        Next
+        'Stock sheet array
+        For Each itm In optiodat.stock_sheet_array
+            obj_opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(itm))
+        Next
+        'X area array
+        For Each itm In optiodat.x_area_array
+            obj_x_area_array.Add(New OPT_RESULT_X_AREA(itm))
+        Next
+        'Y area array
+        Dim _itm As String
+        For Each itm In optiodat.y_area_list
+            _itm = itm.y_area
+            obj_y_area_array.Add(New OPT_RESULT_Y_AREA(_itm))
+        Next
+    End Sub
+    Public Function GetGlassName() As String
+        GetGlassName = My.Computer.FileSystem.GetName(path)
+    End Function
+
 End Class
 
