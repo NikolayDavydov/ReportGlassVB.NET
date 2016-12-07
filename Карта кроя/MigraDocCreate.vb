@@ -159,13 +159,13 @@ Public Class MigraDocCreate
         Dim section As Section = doc.AddSection()
         Dim paragraph As Paragraph = section.AddParagraph()
         Dim i_tmp As Integer = portions.Count
-        For i = 1 To i_tmp
+        For i = 1 To i_tmp ' перечисляем порции
             Dim portion = portions(i)
             Dim j_tmp As Integer = portion.GlassList.Count
-            For j = 1 To j_tmp
+            For j = 1 To j_tmp ' перечисляем типы стекла
                 Dim glassfolder = portion.GlassList(j)
                 Dim k_tmp As Integer = glassfolder.obj_opt_result_stock_sheet_array.Count
-                For k = 0 To k_tmp
+                For k = 0 To k_tmp ' перечисляем листы
                     section = doc.AddSection()
                     paragraph = section.AddParagraph()
                     paragraph.Format.Alignment = ParagraphAlignment.Justify
@@ -175,6 +175,7 @@ Public Class MigraDocCreate
                     paragraph.AddFormattedText(vbTab & "Порция " & i + 1, "Header")
                     paragraph.AddFormattedText(vbTab & "Стекло " & glassfolder.GetGlassName, "Header")
                     paragraph.AddFormattedText(vbTab & "Лист " & k + 1, "Header")
+
                     'Dim imgpath As String
                     'imgpath = FolderPath + "\" + selectedFolder + "\web\img"
                     'paragraph = section.AddParagraph()

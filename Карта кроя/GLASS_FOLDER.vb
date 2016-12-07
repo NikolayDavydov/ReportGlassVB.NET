@@ -1,6 +1,7 @@
 ﻿Imports System.Linq
 Imports System.Collections.ObjectModel
 Imports System.IO
+Imports System.Drawing
 Imports Report.GLASS_FOLDER
 Imports Report.GlobalSub
 Imports Report.Form1
@@ -117,29 +118,17 @@ Public Class GLASS_FOLDER
 
         Sub New(ByVal _str As String)
             str = _str
-            'For i = 0 To UBound(arr, 1)
-            '    If arr(i).StartsWith("[USED_STRATEGY#]=") Then
-            '        USED_STRATEGY = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[USED_OPT_PARA@]=") Then
-            '        USED_OPT_PARA = getValueStr(arr(i))
-            '    ElseIf arr(i).StartsWith("[OPT_AREA_NET#]=") Then
-            '        OPT_AREA_NET = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[OPT_AREA_GROSS#]=") Then
-            '        OPT_AREA_GROSS = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[OPT_WASTE#]=") Then
-            '        OPT_WASTE = getValueDouble(arr(i))
-            '    ElseIf arr(i).StartsWith("[REMNANT_WIDTH#.]=") Then
-            '        REMNANT_WIDTH = getValueDouble(arr(i))
-            '    ElseIf arr(i).StartsWith("[REMNANT_HEIGHT#.]=") Then
-            '        REMNANT_HEIGHT = getValueDouble(arr(i))
-            '    ElseIf arr(i).StartsWith("[STOCK_SHEET_QTY#]=") Then
-            '        STOCK_SHEET_QTY = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[STOCK_SHEET_TYPE_QTY#]=") Then
-            '        STOCK_SHEET_TYPE_QTY = getValueInt(arr(i))
-            '    ElseIf arr(i).StartsWith("[X_AREA_TYPE_QTY#]=") Then
-            '        X_AREA_TYPE_QTY = getValueInt(arr(i))
-            '    End If
-            'Next
+            'str = _str
+            OPT_AREA_GROSS = GetInt32(optiodat.getValue(str, "OPT_AREA_GROSS"))
+            OPT_AREA_NET = GetInt32(optiodat.getValue(str, "OPT_AREA_NET"))
+            OPT_WASTE = GetDouble(optiodat.getValue(str, "OPT_WASTE"))
+            REMNANT_HEIGHT = GetDouble(optiodat.getValue(str, "REMNANT_HEIGHT"))
+            REMNANT_WIDTH = GetDouble(optiodat.getValue(str, "REMNANT_WIDTH"))
+            STOCK_SHEET_QTY = GetInt32(optiodat.getValue(str, "STOCK_SHEET_QTY"))
+            STOCK_SHEET_TYPE_QTY = GetInt32(optiodat.getValue(str, "STOCK_SHEET_TYPE_QTY"))
+            USED_OPT_PARA = optiodat.getValue(str, "USED_OPT_PARA")
+            USED_STRATEGY = GetInt32(optiodat.getValue(str, "USED_STRATEGY"))
+            X_AREA_TYPE_QTY = GetInt32(optiodat.getValue(str, "X_AREA_TYPE_QTY"))
         End Sub
     End Class
     Public Class OPT_RESULT_X_AREA
@@ -328,6 +317,15 @@ Public Class GLASS_FOLDER
     End Sub
     Public Function GetGlassName() As String
         GetGlassName = My.Computer.FileSystem.GetName(path)
+    End Function
+
+    Public Function DrawStockSheet() As System.Drawing.Graphics
+        Dim graph As System.Drawing.Graphics
+        pict = New Bitmap(Convert.ToInt32(sizeOut.Width), Convert.ToInt32(sizeOut.Height), System.Drawing.Imaging.PixelFormat.Format16bppRgb555)
+
+        plateGraph = System.Drawing.Graphics.FromImage(pict)
+        plateGraph.Clear(System.Drawing.Color.Gray)
+
     End Function
 
 End Class
