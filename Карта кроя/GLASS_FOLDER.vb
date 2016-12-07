@@ -320,12 +320,18 @@ Public Class GLASS_FOLDER
         GetGlassName = My.Computer.FileSystem.GetName(path)
     End Function
 
-    Public Function DrawStockSheet() As System.Drawing.Graphics
-        Dim graph As System.Drawing.Graphics
-        pict = New Bitmap(Convert.ToInt32(sizeOut.Width), Convert.ToInt32(sizeOut.Height), System.Drawing.Imaging.PixelFormat.Format16bppRgb555)
+    Public Function DrawStockSheet(ByVal numSheet As Integer) As System.Drawing.Graphics
+        If numSheet > obj_opt_result_stock_sheet_array.Count Then
+            Return Nothing
+        Else
 
-        plateGraph = System.Drawing.Graphics.FromImage(pict)
-        plateGraph.Clear(System.Drawing.Color.Gray)
+            Dim graph As System.Drawing.Graphics
+            pict = New Bitmap(Convert.ToInt32(sizeOut.Width), Convert.ToInt32(sizeOut.Height), System.Drawing.Imaging.PixelFormat.Format16bppRgb555)
+            plateGraph = System.Drawing.Graphics.FromImage(pict)
+            plateGraph.Clear(System.Drawing.Color.Gray)
+            obj_opt_result_stock_sheet_array.Item(numSheet).Draw(graph)
+        End If
+        
 
     End Function
 
