@@ -308,6 +308,7 @@ Public Class GLASS_FOLDER
         For Each itm In optiodat.x_area_array
             obj_x_area_array.Add(New OPT_RESULT_X_AREA(itm))
         Next
+
         'Y area array
         Dim _itm As String
         For Each itm In optiodat.y_area_list
