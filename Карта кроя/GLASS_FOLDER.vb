@@ -11,10 +11,10 @@ Public Class GLASS_FOLDER
     Private nameGlass As String
     Shared optiodat As ReadOptioDat
     Public obj_header As HEADER
+    Shared obj_GlassArray As GLASS_ARRAY
     Public obj_item_array As New List(Of ITEM)
     Public obj_opt_parameter As OPT_PARAMETER
     Public obj_opt_result_header As OPT_RESULT_HEADER
-    Public obj_GlassArray As New List(Of GLASS)
     Public obj_opt_result_stock_sheet_array As New List(Of OPT_RESULT_STOCK_SHEET)
     Public obj_x_area_array As New List(Of OPT_RESULT_X_AREA)
     Public obj_y_area_array As New List(Of OPT_RESULT_Y_AREA)
@@ -28,6 +28,24 @@ Public Class GLASS_FOLDER
             RELEASE = GetInt32(optiodat.getValue(str, "RELEASE"))
             OWNER = optiodat.getValue(str, "OWNER")
         End Sub
+    End Class
+    Public Class GLASS_ARRAY
+        Public ListGlass As New List(Of GLASS)
+        Sub New()
+            For Each itm In optiodat.glass_array
+                ListGlass.Add(New GLASS(itm))
+            Next
+        End Sub
+        Public Function GetGlass(ByVal ref As Integer) As GLASS
+            Dim _glass As GLASS
+            If ListGlass(ref).QTY > 0 Then
+                _glass = ListGlass(ref).clone()
+                _glass.QTY = 1
+                ListGlass(ref).QTY = ListGlass(ref).QTY - 1
+                Return _glass
+            End If
+            Return Nothing
+        End Function
     End Class
     Public Class GLASS 'Форматы стекол
         Public REC As Integer 'Номер записи
@@ -59,6 +77,9 @@ Public Class GLASS_FOLDER
             MIN_BREAK_DIST = GetDouble(optiodat.getValue(str, "MIN_BREAK_DIST"))
             ORIENTATION = GetInt32(optiodat.getValue(str, "ORIENTATION"))
         End Sub
+        Public Function clone() As GLASS
+            Return DirectCast(Me.MemberwiseClone(), GLASS)
+        End Function
     End Class
     Public Class OPT_PARAMETER
         Public MAX_SUBPL_WIDTH As Double
@@ -78,7 +99,9 @@ Public Class GLASS_FOLDER
     End Class
     Public Class OPT_RESULT_STOCK_SHEET
         'Protected OPT As OPT_RESULT_STOCK_SHEET
+        Public graph As System.Drawing.Graphics
         Public STOCK_SHEET As Integer 'номер листа
+        Public GLASS_FORMAT As GLASS
         Public GLASS_REF As Integer 'номер формата стекла на складе стекла
         Public REMNANT_WIDTH As Double 'Остаток на листе
         Public X_AREA_QTY As Integer 'Общее количество субпластин
@@ -91,6 +114,7 @@ Public Class GLASS_FOLDER
             Dim lst As List(Of String)
             STOCK_SHEET = GetInt32(optiodat.getValue(str, "STOCK_SHEET"))
             GLASS_REF = GetInt32(optiodat.getValue(str, "GLASS_REF"))
+            GLASS_FORMAT = obj_GlassArray.GetGlass(GLASS_REF)
             REMNANT_WIDTH = GetDouble(optiodat.getValue(str, "REMNANT_WIDTH"))
             X_AREA_QTY = GetInt32(optiodat.getValue(str, "X_AREA_QTY"))
             ROTATED_YN = GetInt32(optiodat.getValue(str, "ROTATED_YN"))
@@ -101,6 +125,17 @@ Public Class GLASS_FOLDER
                 xAreaString = optiodat.getXAreaRef(Convert.ToInt32(itm))
                 X_AREA_REF.Add(New OPT_RESULT_X_AREA(xAreaString))
             Next
+        End Sub
+
+        Public Function GetFormat() As System.Drawing.Size
+            Dim sizeSheet As System.Drawing.Size
+            sizeSheet.Width = GLASS_FORMAT.WIDTH
+            sizeSheet.Height = GLASS_FORMAT.HEIGHT
+        End Function
+
+        Public Sub Draw()
+            Dim graph_tmp As System.Drawing.Graphics
+
         End Sub
     End Class
     Public Class OPT_RESULT_HEADER
@@ -297,9 +332,10 @@ Public Class GLASS_FOLDER
             obj_item_array.Add(New ITEM(itm))
         Next
         'Glass array
-        For Each itm In optiodat.glass_array
-            obj_GlassArray.Add(New GLASS(itm))
-        Next
+        obj_GlassArray = New GLASS_ARRAY()
+        'For Each itm In optiodat.glass_array
+        '    obj_GlassArray.Add(New GLASS(itm))
+        'Next
         'Stock sheet array
         For Each itm In optiodat.stock_sheet_array
             obj_opt_result_stock_sheet_array.Add(New OPT_RESULT_STOCK_SHEET(itm))
@@ -324,11 +360,13 @@ Public Class GLASS_FOLDER
         If numSheet > obj_opt_result_stock_sheet_array.Count Then
             Return Nothing
         Else
-
+            Dim pict As System.Drawing.Bitmap
             Dim graph As System.Drawing.Graphics
-            pict = New Bitmap(Convert.ToInt32(sizeOut.Width), Convert.ToInt32(sizeOut.Height), System.Drawing.Imaging.PixelFormat.Format16bppRgb555)
-            plateGraph = System.Drawing.Graphics.FromImage(pict)
-            plateGraph.Clear(System.Drawing.Color.Gray)
+            Dim sizeout As System.Drawing.Size
+            sizeout = obj_opt_result_stock_sheet_array.Item(numSheet).GetFormat()
+            pict = New Bitmap(Convert.ToInt32(sizeout.Width), Convert.ToInt32(sizeout.Height), System.Drawing.Imaging.PixelFormat.Format16bppRgb555)
+            graph = System.Drawing.Graphics.FromImage(pict)
+            graph.Clear(System.Drawing.Color.Gray)
             obj_opt_result_stock_sheet_array.Item(numSheet).Draw(graph)
         End If
         
