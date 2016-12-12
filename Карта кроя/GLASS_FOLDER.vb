@@ -1,10 +1,12 @@
-﻿Imports System.Linq
+﻿'Release 12/12/2016
+Imports System.Linq
 Imports System.Collections.ObjectModel
 Imports System.IO
 Imports System.Drawing
 Imports Report.GLASS_FOLDER
 Imports Report.GlobalSub
 Imports Report.Form1
+
 Public Class GLASS_FOLDER
     Private path As String
     Private file As String
@@ -355,7 +357,6 @@ Public Class GLASS_FOLDER
     Public Function GetGlassName() As String
         GetGlassName = My.Computer.FileSystem.GetName(path)
     End Function
-
     Public Function DrawStockSheet(ByVal numSheet As Integer) As System.Drawing.Graphics
         If numSheet > obj_opt_result_stock_sheet_array.Count Then
             Return Nothing
@@ -369,9 +370,8 @@ Public Class GLASS_FOLDER
             graph.Clear(System.Drawing.Color.Gray)
             obj_opt_result_stock_sheet_array.Item(numSheet).Draw(graph)
         End If
-        
+
 
     End Function
-
 End Class
 
