@@ -157,6 +157,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Figure.vb" />
     <Compile Include="ITAP\Class2.vb" />
     <Compile Include="ITAP\Class1.vb" />
     <Compile Include="Colors.vb" />
