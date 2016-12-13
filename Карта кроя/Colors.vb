@@ -5,10 +5,12 @@
         Public penThikness As Single
     End Structure
     Public RectPlate As colorRectangle 'Параметры прямоугольника листа
-    Public LineRed As colorRectangle 'Параметры границы субпластин
-    Public LineBlack As colorRectangle 'Параметры границы группы деталей
     Public RectPlateWithoutBorders As colorRectangle 'Параметры окромленного листа
+
+    Public LineRed As colorRectangle 'Параметры границы субпластин
     Public RectSubPlate As colorRectangle 'Параметры субпластины
+
+    Public LineBlack As colorRectangle 'Параметры границы группы деталей
     Public RectDetail As colorRectangle 'Параметры детали
 
     Sub New()

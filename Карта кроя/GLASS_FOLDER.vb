@@ -6,6 +6,7 @@ Imports System.Drawing
 Imports Report.GLASS_FOLDER
 Imports Report.GlobalSub
 Imports Report.Form1
+Imports Report.Colors
 
 Public Class GLASS_FOLDER
     Private path As String
@@ -111,6 +112,7 @@ Public Class GLASS_FOLDER
         Public ROTATED_YN As Integer 'Признак поворота листа
         Public X_AREA_TYPE_QTY As Integer 'Общее количество субпластин
         Public X_AREA_REF As List(Of OPT_RESULT_X_AREA) 'Список субпластин
+        Public points As New List(Of System.Drawing.Point)
 
         Sub New(ByVal _str As String)
             Dim str As String = _str
@@ -135,12 +137,27 @@ Public Class GLASS_FOLDER
             sizeSheet.Width = GLASS_FORMAT.WIDTH
             sizeSheet.Height = GLASS_FORMAT.HEIGHT
         End Function
+
         Public Function Draw(ByVal graph As System.Drawing.Graphics) As System.Drawing.Graphics
             Dim graph_tmp As System.Drawing.Graphics
+            Dim pt As System.Drawing.Point
+            Dim colour As New Colors
+            Dim szPlateWOBorders As System.Drawing.Size
             graph_tmp = graph
             szPlate = GetFormat()
+            szPlateWOBorders.Width = szPlate.Width - GLASS_FORMAT.LEFT_TRIM - GLASS_FORMAT.RIGHT_TRIM
+            szPlateWOBorders.Height = szPlate.Height - GLASS_FORMAT.TOP_TRIM - GLASS_FORMAT.BOTTOM_TRIM
             ratio = CalcRatio(szPlate)
-
+            pt.X = 0
+            pt.Y = 0
+            graph_tmp = PlaceRectangle(graph_tmp, pt, szPlate, colour.RectPlate)
+            pt.X = pt.X + GLASS_FORMAT.LEFT_TRIM
+            pt.Y = pt.Y + GLASS_FORMAT.BOTTOM_TRIM
+            graph_tmp = PlaceRectangle(graph_tmp, pt, szPlateWOBorders, colour.RectPlate)
+            For Each i In X_AREA_REF
+                graph_tmp = i.draw(graph_tmp)
+            Next
+            Return graph_tmp
         End Function
     End Class
     Public Class OPT_RESULT_HEADER
@@ -194,8 +211,27 @@ Public Class GLASS_FOLDER
                 Y_AREA_REF.Add(GetInt32(itm))
             Next
         End Sub
-        Public Sub draw()
-        End Sub
+        Public Function Draw(ByVal graph As System.Drawing.Graphics) As System.Drawing.Graphics
+            Dim graph_tmp As System.Drawing.Graphics
+            Dim pt As System.Drawing.Point
+            Dim colour As New Colors
+            Dim szPlateWOBorders As System.Drawing.Size
+            graph_tmp = graph
+            szPlate = GetFormat()
+            szPlateWOBorders.Width = szPlate.Width - GLASS_FORMAT.LEFT_TRIM - GLASS_FORMAT.RIGHT_TRIM
+            szPlateWOBorders.Height = szPlate.Height - GLASS_FORMAT.TOP_TRIM - GLASS_FORMAT.BOTTOM_TRIM
+            ratio = CalcRatio(szPlate)
+            pt.X = 0
+            pt.Y = 0
+            graph_tmp = PlaceRectangle(graph_tmp, pt, szPlate, colour.RectPlate)
+            pt.X = pt.X + GLASS_FORMAT.LEFT_TRIM
+            pt.Y = pt.Y + GLASS_FORMAT.BOTTOM_TRIM
+            graph_tmp = PlaceRectangle(graph_tmp, pt, szPlateWOBorders, colour.RectPlate)
+            For Each i In X_AREA_REF
+                graph_tmp = i.draw(graph_tmp)
+            Next
+            Return graph_tmp
+        End Function
     End Class
     Public Class OPT_RESULT_Y_AREA
         Inherits Figure

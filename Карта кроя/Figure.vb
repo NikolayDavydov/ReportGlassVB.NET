@@ -5,7 +5,8 @@ Public Class Figure
     Public ratio As Single
     Public szPlate As System.Drawing.Size
 
-    Private Function PlaceRectangle(ByVal graph As System.Drawing.Graphics,
+
+    Public Function PlaceRectangle(ByVal graph As System.Drawing.Graphics,
                                     ByVal _pt As System.Drawing.Point,
                                     ByVal _sz_tmp As System.Drawing.Size,
                                     ByVal _colorRect As colorRectangle) As System.Drawing.Graphics
@@ -22,7 +23,7 @@ Public Class Figure
         graph.DrawRectangle(pen, rect)
         Return graph
     End Function
-    Private Function TrfCoordRectangle(ByVal origPoint As System.Drawing.Point,
+    Public Function TrfCoordRectangle(ByVal origPoint As System.Drawing.Point,
                                        ByVal origSize As System.Drawing.Size,
                                        ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
 
@@ -32,34 +33,36 @@ Public Class Figure
         Return newPoint
     End Function
 
-    Private Function PlaceLine(ByVal graph As System.Drawing.Graphics,
+    Public Function PlaceLine(ByVal graph As System.Drawing.Graphics,
                                ByVal pt1 As System.Drawing.Point,
                                ByVal pt2 As System.Drawing.Point,
                                ByVal colorLine As colorRectangle) As System.Drawing.Graphics
+        'pt1 Координата начала линии в исходной системе координат
+        'pt2 Координата конца линии в исходной системе координат
         Dim pen As New System.Drawing.Pen(colorLine.colorPen, colorLine.penThikness)
-        graph.DrawLine(pen, pt1, pt2)
+        pt1 = TrfCoordPoint(pt1, szPlate)
+        pt2 = TrfCoordPoint(pt2, szPlate)
+        graph.DrawLine(pen, ResizeByRatio(pt1, ratio), ResizeByRatio(pt2, ratio))
         Return graph
     End Function
-   
-    Private Function TrfCoordPoint(ByVal origPoint As System.Drawing.Point, ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
+    Public Function TrfCoordPoint(ByVal origPoint As System.Drawing.Point, ByVal szPlate As System.Drawing.Size) As System.Drawing.Point
         Dim newPoint As System.Drawing.Point
         newPoint.X = szPlate.Width - origPoint.X
         newPoint.Y = szPlate.Height - origPoint.Y
         Return newPoint
     End Function
 
-    Private Function ResizeByRatio(ByVal value As System.Drawing.Point, ByVal ratio As Double) As System.Drawing.Point
+    Public Function ResizeByRatio(ByVal value As System.Drawing.Point, ByVal ratio As Double) As System.Drawing.Point
         ResizeByRatio.X = CInt(CDbl(value.X) / ratio)
         ResizeByRatio.Y = CInt(CDbl(value.Y) / ratio)
     End Function
-    Private Function ResizeByRatio(ByVal value As System.Drawing.Size, ByVal ratio As Double) As System.Drawing.Size
+    Public Function ResizeByRatio(ByVal value As System.Drawing.Size, ByVal ratio As Double) As System.Drawing.Size
         ResizeByRatio.Width = CInt(CDbl(value.Width) / ratio)
         ResizeByRatio.Height = CInt(CDbl(value.Height) / ratio)
     End Function
-    Private Function ResizeByRatio(ByVal x As Integer, ByVal ratio As Double) As Integer
+    Public Function ResizeByRatio(ByVal x As Integer, ByVal ratio As Double) As Integer
         ResizeByRatio = CInt(CDbl(x) / ratio)
     End Function
-
     Public Function CalcRatio(ByVal sz As System.Drawing.Size) As Single
         'Calculate ratio
 
@@ -88,13 +91,4 @@ Public Class Figure
 
         Return ratio
     End Function
-
-    'Public Function ResizePoint(ByVal pt As System.Drawing.Point, ByVal ratio As Single) As System.Drawing.Point
-    '    ResizePoint.X = CInt(CDbl(pt.X) * ratio)
-    '    ResizePoint.Y = CInt(CDbl(pt.Y) * ratio)
-    'End Function
-    'Public Function ResizeSize(ByVal sz As Size, ByVal ratio As Single) As Size
-    '    ResizeSize.Width = CInt(CDbl(sz.Width) * ratio)
-    '    ResizeSize.Height = CInt(CDbl(sz.Height) * ratio)
-    'End Function
 End Class
