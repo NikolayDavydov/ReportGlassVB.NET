@@ -100,6 +100,7 @@ Public Class GLASS_FOLDER
         End Sub
     End Class
     Public Class OPT_RESULT_STOCK_SHEET
+        Inherits Figure
         'Protected OPT As OPT_RESULT_STOCK_SHEET
         Public graph As System.Drawing.Graphics
         Public STOCK_SHEET As Integer 'номер листа
@@ -134,7 +135,6 @@ Public Class GLASS_FOLDER
             sizeSheet.Width = GLASS_FORMAT.WIDTH
             sizeSheet.Height = GLASS_FORMAT.HEIGHT
         End Function
-
         Public Function Draw(ByVal graph As System.Drawing.Graphics) As System.Drawing.Graphics
             Dim graph_tmp As System.Drawing.Graphics
             graph_tmp = graph
@@ -171,6 +171,7 @@ Public Class GLASS_FOLDER
         End Sub
     End Class
     Public Class OPT_RESULT_X_AREA
+        Inherits Figure
         Public X_AREA As Integer
         Public WIDTH As Double
         Public HEIGHT As Double
@@ -196,6 +197,7 @@ Public Class GLASS_FOLDER
         End Sub
     End Class
     Public Class OPT_RESULT_Y_AREA
+        Inherits Figure
         Public Y_AREA As Integer
         Public WIDTH As Double
         Public HEIGHT As Double
@@ -246,6 +248,7 @@ Public Class GLASS_FOLDER
         'End Function
     End Class
     Public Class OPT_RESULT_U_V_W_Z_AREA
+        Inherits Figure
         Public U_V_W_Z_AREA_HEIGHT As Double
         Public U_V_W_Z_AREA_ITEM_REF As Integer
         Public U_V_W_Z_AREA_QTY_X As Integer
@@ -262,6 +265,7 @@ Public Class GLASS_FOLDER
 
     End Class
     Public Class ITEM
+        Inherits Figure
         Public REC As Integer
         Public BOX As Integer
         Public ORDER As String
@@ -303,21 +307,21 @@ Public Class GLASS_FOLDER
             Dim rect As System.Drawing.Rectangle
             sz.Width = WIDTH
             sz.Height = HEIGHT
-            rect = New System.Drawing.Rectangle(ResizePoint(pt, ratio), ResizeSize(sz, ratio))
+            'rect = New System.Drawing.Rectangle(ResizePoint(pt, ratio), ResizeSize(sz, ratio))
             graph.FillRectangle(fill, rect)
             graph.DrawRectangle(pen, rect)
 
             'Наносим на деталь маркировку
             Dim centerRectangle As PointF
-            centerRectangle.X = ResizePoint(pt, ratio).X + (ResizeSize(sz, ratio).Width / 2)
-            centerRectangle.Y = ResizePoint(pt, ratio).Y + (ResizeSize(sz, ratio).Height / 2)
+            'centerRectangle.X = ResizePoint(pt, ratio).X + (ResizeSize(sz, ratio).Width / 2)
+            'centerRectangle.Y = ResizePoint(pt, ratio).Y + (ResizeSize(sz, ratio).Height / 2)
             ' Create font and brush.
             Dim drawFont As New System.Drawing.Font("Arial", 38)
             Dim drawBrush As New SolidBrush(System.Drawing.Color.Black)
             ' Create point for upper-left corner of drawing.
             Dim drawPoint As New PointF()
             drawPoint.Y = centerRectangle.Y
-            drawPoint.X = ResizePoint(pt, ratio).X
+            'drawPoint.X = ResizePoint(pt, ratio).X
             ' Set format of string.
             Dim drawFormat As New StringFormat
             graph.DrawString(RACK, drawFont, drawBrush, drawPoint, drawFormat)

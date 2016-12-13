@@ -183,15 +183,15 @@ Public Class MigraDocCreate
                     'imgName = imgpath + "\" + CStr(i) + "-" + CStr(j) + "-" + CStr(k) + ".png"
 
                     'Dim image2 As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
-                    Dim image As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
-                    image.Width = "29cm"
+                    'Dim image As MigraDoc.DocumentObjectModel.Shapes.Image = paragraph.AddImage(imgName)
+                    '.Width = "29cm"
                     'image.Height = "13.4cm"
-                    image.LockAspectRatio = True
-                    image.RelativeVertical = RelativeVertical.Line
-                    image.RelativeHorizontal = RelativeHorizontal.Margin
-                    image.Top = ShapePosition.Top
-                    image.Left = ShapePosition.Left
-                    image.WrapFormat.Style = WrapStyle.TopBottom
+                    'image.LockAspectRatio = True
+                    'image.RelativeVertical = RelativeVertical.Line
+                    'image.RelativeHorizontal = RelativeHorizontal.Margin
+                    'image.Top = ShapePosition.Top
+                    'image.Left = ShapePosition.Left
+                    'image.WrapFormat.Style = WrapStyle.TopBottom
                 Next k
             Next j
         Next i

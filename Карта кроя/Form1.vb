@@ -371,11 +371,11 @@ Public Class Form1
                                         'Рисуем Субпластину
                                         sz_tmp.Width = .widthSubPlate
                                         sz_tmp.Height = .heightSubplate
-                                        pt_tmp = TrfCoordRectangle(coordSubPlate, sz_tmp, sz)
+                                        'pt_tmp = TrfCoordRectangle(coordSubPlate, sz_tmp, sz)
                                         'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectSubPlate)
 
                                         sz_tmp.Height = sz2.Height
-                                        pt_tmp = TrfCoordRectangle(coordSubPlate, sz_tmp, sz)
+                                        'pt_tmp = TrfCoordRectangle(coordSubPlate, sz_tmp, sz)
                                         'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectSubPlate)
                                         coordGroupDetail.X = coordSubPlate.X
                                         coordGroupDetail.Y = coordSubPlate.Y
@@ -383,7 +383,7 @@ Public Class Form1
                                             With .groupDetail(p)
                                                 sz_tmp.Width = .widthGroup
                                                 sz_tmp.Height = .heightGroup
-                                                pt_tmp = TrfCoordRectangle(coordGroupDetail, sz_tmp, sz)
+                                                'pt_tmp = TrfCoordRectangle(coordGroupDetail, sz_tmp, sz)
                                                 'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
                                                 For q = 0 To .quDetail - 1 'Деталь
 
@@ -391,7 +391,7 @@ Public Class Form1
                                                     If .details(q).quVertical = 1 And .details(q).quHorisontal = 1 Then
                                                         sz_tmp.Width = .widthGroup
                                                         sz_tmp.Height = .heightGroup
-                                                        pt_tmp = TrfCoordRectangle(coordGroupDetail, sz_tmp, sz)
+                                                        'pt_tmp = TrfCoordRectangle(coordGroupDetail, sz_tmp, sz)
                                                         'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
                                                         'plateGraph = PlaceMarking(plateGraph, pt_tmp, sz_tmp, ratio, .details(q).marking)
                                                     Else
@@ -402,7 +402,7 @@ Public Class Form1
                                                                 For s = 0 To .quVertical - 1
                                                                     sz_tmp.Width = .widthDetail
                                                                     sz_tmp.Height = .heightDetail
-                                                                    pt_tmp = TrfCoordRectangle(coordDetail, sz_tmp, sz)
+                                                                    'pt_tmp = TrfCoordRectangle(coordDetail, sz_tmp, sz)
                                                                     'plateGraph = PlaceRectangle(plateGraph, pt_tmp, sz_tmp, ratio, colorRectDetail)
                                                                     'plateGraph = PlaceMarking(plateGraph, pt_tmp, sz_tmp, ratio, .marking)
                                                                     coordDetail.Y = coordDetail.Y + .heightDetail
@@ -422,7 +422,7 @@ Public Class Form1
                                 coordSubPlate.Y = coordPlate.Y
                                 For m = 0 To .quSubPlate - 1  'Субпластина
                                     With .subPlate(m)
-                                        pt_tmp = TrfCoordPoint(coordSubPlate, sz)
+                                        ' pt_tmp = TrfCoordPoint(coordSubPlate, sz)
                                         pt2_tmp.X = pt_tmp.X
                                         pt2_tmp.Y = pt_tmp.Y - sz2.Height
                                         'plateGraph = PlaceLine(plateGraph, pt_tmp, pt2_tmp, ratio, colorLineRed)
@@ -431,7 +431,7 @@ Public Class Form1
                                         For p = 0 To .quGroupDetail - 1 'Группа деталей
                                             'Рисуем Границу группы деталей
                                             coordGroupDetail.Y = coordGroupDetail.Y + .groupDetail(p).heightGroup
-                                            pt_tmp = TrfCoordPoint(coordGroupDetail, sz)
+                                            'pt_tmp = TrfCoordPoint(coordGroupDetail, sz)
                                             pt2_tmp.X = pt_tmp.X - .widthSubPlate
                                             pt2_tmp.Y = pt_tmp.Y '- sz2.Height
                                             'plateGraph = PlaceLine(plateGraph, pt_tmp, pt2_tmp, ratio, colorLineBlack)
