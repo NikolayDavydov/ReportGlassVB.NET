@@ -37,11 +37,11 @@ Public Class Figure
     End Function
     Private Function CalcRatio(ByVal sz As System.Drawing.Size) As Single
         'Calculate ratio
-       
+
         Dim ratio As Single
         Dim ratioWidth As Single
         Dim ratioHeight As Single
-        
+
         Dim sizeNew As System.Drawing.SizeF
 
         If sz.Width > 0 And sz.Height > 0 Then
