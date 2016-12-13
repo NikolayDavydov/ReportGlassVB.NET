@@ -135,11 +135,12 @@ Public Class GLASS_FOLDER
             sizeSheet.Height = GLASS_FORMAT.HEIGHT
         End Function
 
-        Public Sub Draw(ByVal graph As System.Drawing.Graphics)
-            'Dim graph_tmp As System.Drawing.Graphics
+        Public Function Draw(ByVal graph As System.Drawing.Graphics) As System.Drawing.Graphics
+            Dim graph_tmp As System.Drawing.Graphics
+            graph_tmp = graph
 
 
-        End Sub
+        End Function
     End Class
     Public Class OPT_RESULT_HEADER
         Public str As String
