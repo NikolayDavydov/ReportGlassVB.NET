@@ -138,7 +138,8 @@ Public Class GLASS_FOLDER
         Public Function Draw(ByVal graph As System.Drawing.Graphics) As System.Drawing.Graphics
             Dim graph_tmp As System.Drawing.Graphics
             graph_tmp = graph
-
+            szPlate = GetFormat()
+            ratio = CalcRatio(szPlate)
 
         End Function
     End Class
